@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PublicHeader from './components/header/header'
+
 
 class App extends Component {
+  
   render() {
     return (
       <div className="App">
+        <PublicHeader title='首页' name='刘祖安' confirm />
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
