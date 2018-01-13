@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './header.css'
+import './header.scss'
 
 export default class PublicHeader extends Component {
 
   render () {
     return (
       <header className='container'>
+        <span></span>
         <span>{this.props.title}</span>
-        <span>{this.props.name}</span>
-        
+        <span></span>
       </header>
     )
   }

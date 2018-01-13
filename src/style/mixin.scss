@@ -1,0 +1,27 @@
+$color: blue;
+@mixin positionTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@mixin positionBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin borderBottom ($color: #eee) {
+  border-bottom: 1px solid $color;
+}
+
+@mixin font ($font-size, $color, $text-align: left) {
+  font-size: $font-size;
+  color: $color;
+  text-align: $text-align;
+}
+
+@mixin wh ($width: 100%, $height) {
+  width: $width;
+  height: $height;
+}
