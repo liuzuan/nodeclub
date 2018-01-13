@@ -42,7 +42,7 @@ class Home extends Component {
             <li>
               {
                 this.state.topicData.map((item, index) => {
-                  return <div>123456</div>
+                  return <div>{item}</div>
                 })
               }
             </li>
