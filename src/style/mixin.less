@@ -1,0 +1,38 @@
+@color: blue;
+.positionTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.positionBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.borderBottom (@color: #eee) {
+  border-bottom: 1px solid @color;
+}
+
+.shadowBottom (@color: #ccc) {
+  box-shadow: 0 1px 1px 1px @color;
+}
+
+.font (@font-size, @text-align: left, @weight: 400, @color) {
+  font-size: @font-size;
+  text-align: @text-align;
+  font-weight: @weight;
+  color: @color;
+}
+
+.wh (@width: 100%, @height) {
+  width: @width;
+  height: @height;
+}
+
+.flex (@justify-content: space-around, @wrap: wrap) {
+  display: flex;
+  justify-content: @justify-content;
+  flex-wrap: @wrap
+}
