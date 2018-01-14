@@ -1,0 +1,48 @@
+@import (reference) '../../../style/mixin.less';
+
+.topic_lists {
+  margin-top: 90px;
+
+  .topic_cell {
+    .wh(100%, 135px);
+    .shadowBottom;
+    margin-bottom: 15px;
+
+    .author {
+      padding: 10px;
+      height: 40px;
+
+      .topic_cell_avatar {
+        float: left;
+        .wh(40px, 40px);
+        .circleImg;
+      }
+
+      .name_time {
+        float: left;
+        .author_name {
+          .font(16px, left, 500, black)
+        }
+        .time {
+          .font(14px, left, 400, rgb(27, 25, 25))
+        }
+      }
+
+      .topic_type {
+        float: right;
+      }
+      .isTop {
+        float: right;
+        color: red;
+      }
+      .isGood {
+        float: right;
+        color: yellowgreen;
+      }
+    }
+    .topic_title {
+      padding: 10px 25px;
+      .font(16px, left, 400, black)
+    }
+  }
+}

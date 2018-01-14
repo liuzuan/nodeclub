@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PublicHeader from '../../components/header/header';
+import TopicList from './components/topicList'
 import './home.less'
-import { HomeData } from '../../config/utils/getData'
 
 class Home extends Component {
 
@@ -14,14 +14,14 @@ class Home extends Component {
       { title: '招聘', tab: 'job' },
       { title: '测试', tab: 'dev' },
     ],
-    topicData: [],
+    currentTab: ''
   }
 
-  async componentDidMount () {
-    this.setState({
-      topicData: await HomeData(1, 'good', 20)
-    })
-    console.log(this.state.topicData)
+  tabSelect (a) {
+    // this.setState({
+    //   currentTab: a
+    // })
+    console.log(a,this)
   }
 
   render () {
@@ -32,22 +32,15 @@ class Home extends Component {
           <nav className='home_nav'>
             {
               this.state.navItems.map((item, index) => {
-                return <li className='navList' key={index}>
+                return <li className='navList' onClick={(e) => this.tabSelect(item.tab, e)} key={index}>
                   {item.title}
                 </li>
               })
             }
           </nav>
-          <section className='topic_lists'>
-            <li>
-              {
-                this.state.topicData.map((item, index) => {
-                  return <div>{item}</div>
-                })
-              }
-            </li>
-          </section>
+          <TopicList tabs={this.state.navItems} currentTab={this.state.currentTab} />
         </section>
+
       </div>
     );
   }
