@@ -36,9 +36,16 @@
 .flex (@justify-content: space-around, @wrap: wrap) {
   display: flex;
   justify-content: @justify-content;
+  
   flex-wrap: @wrap
 }
 // 圆形图片
 .circleImg (@rad: 50%) {
   border-radius: @rad;
+}
+
+.text-overflow{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
 }

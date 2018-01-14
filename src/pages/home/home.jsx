@@ -17,11 +17,10 @@ class Home extends Component {
     currentTab: ''
   }
 
-  tabSelect (a) {
-    // this.setState({
-    //   currentTab: a
-    // })
-    console.log(a,this)
+  tabSelect (tab) {
+    this.setState({
+      currentTab: tab
+    })
   }
 
   render () {
@@ -32,7 +31,7 @@ class Home extends Component {
           <nav className='home_nav'>
             {
               this.state.navItems.map((item, index) => {
-                return <li className='navList' onClick={(e) => this.tabSelect(item.tab, e)} key={index}>
+                return <li className={item.tab === this.state.currentTab? 'activeTab':'navList'} onClick={(e) => this.tabSelect(item.tab, e)} key={index}>
                   {item.title}
                 </li>
               })

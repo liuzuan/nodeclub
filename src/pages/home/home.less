@@ -6,10 +6,18 @@
     .flex;
     .wh(100%, 40px);
     line-height: 40px;
-    .font(14px, center, 400, rgba(21, 20, 20, 0.726));
+    .font(15px, center, 400, rgba(21, 20, 20, 0.726));
     .shadowBottom;
     z-index: 999;
     background: #fff;
     .positionTop(50px);
+    .navList {
+      padding: 0 8px;
+    }
+    .activeTab {
+      .navList;
+      color: rgb(80, 228, 11);
+      border-bottom: 3px solid rgb(80, 228, 11);
+    }
   }
 }
