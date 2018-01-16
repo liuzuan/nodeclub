@@ -5,12 +5,12 @@ export default class PublicHeader extends Component {
 
   render () {
     return (
-      <header className='container'>
+      <header className='header_container'>
         <span>
-          
+
         </span>
-      <span>{this.props.title}</span>
-      <span></span>
+        <span>{this.props.title}</span>
+        <span></span>
       </header >
     )
   }

@@ -13,9 +13,9 @@ class TopicList extends Component {
   }
   async componentWillMount () {
     this.setState({
-      topicData: await HomeData(1, '', 40)
+      topicData: await HomeData(1, '', 20)
     })
-    console.log(this.state.topicData)
+    // console.log(this.state.topicData)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -25,7 +25,7 @@ class TopicList extends Component {
   async componentWillReceiveProps (nextProps) {
     if (this.props.currentTab !== nextProps.currentTab) {
       this.setState({
-        topicData: await HomeData(1, nextProps.currentTab, 40)
+        topicData: await HomeData(1, nextProps.currentTab, 20)
       })
     }
   }
@@ -41,10 +41,12 @@ class TopicList extends Component {
   render () {
     return (
       <section className='topic_lists'>
+        
         {
           this.state.topicData.map((item, index) => {
-            return <li className='topic_cell' key={index}>
+            return <li className='topic_cell' key={item.id}>
               <Link to={`/topic/${item.id}`}>
+              {/* <Link to={{ pathname: `/topic/${item.id}`, query: {a: 123}, state: {b: 456} }}> */}
                 <section className='author'>
                   <img className='topic_cell_avatar' src={item.author.avatar_url} alt="" />
                   <div className='name_time'>

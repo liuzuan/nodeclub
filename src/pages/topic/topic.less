@@ -1,1 +1,75 @@
 @import (reference) '../../style/mixin.less';
+
+.topic_content {
+  margin-top: 50px;
+  .shadowBottom;
+  margin-bottom: 15px;
+  .author {
+    height: 41px;
+    padding: 10px;
+    .borderBottom;
+    .author_avatar {
+      float: left;
+      display: block;
+      .wh(40px,40px);
+      .circleImg;
+    }
+    .author_name {
+      float: left;
+      height: 40px;
+      line-height: 40px;
+    }
+    .zuozhe {
+      .author_name;
+      float: right;
+      color: rgb(5, 63, 189);
+    }
+  }
+  .topic_title {
+    padding: 10px;
+    .font(26px, center, 500, black)
+  }
+  .markdown {
+    padding: 10px;
+    a {
+      color: rgb(5, 63, 189);
+    }
+  }
+}
+
+.replies_content {
+  .shadowBottom;
+  .replies_header {
+    padding: 10px;
+    .borderBottom;
+    span {
+      color: red;
+    }
+  }
+  .reply_list {
+    .borderBottom;
+    padding: 10px;
+    overflow: hidden;
+    .reply_author {
+      overflow: hidden;
+      .reply_avatar {
+        .wh(40px,40px);
+        .circleImg;
+        float: left;
+      }
+      .name_time {
+        float: left;
+        height: 40px;
+        font-size: 14px;
+      }
+      .reply_floor {
+        float: right;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+    .reply_content {
+      padding: 0 10px;
+    }
+  }
+}

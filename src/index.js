@@ -14,6 +14,4 @@ const render = Component => {
 
 render(Router)
 
-
-
 registerServiceWorker();
