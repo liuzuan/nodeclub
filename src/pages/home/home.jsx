@@ -37,6 +37,7 @@ class Home extends Component {
         currentTab: this.props.location.state.tab
       })
     }
+    // console.log(this.props.match.path)
   }
 
 
@@ -50,7 +51,7 @@ class Home extends Component {
   render () {
     return (
       <div>
-        <PublicHeader title='首&ensp;页' confirm />
+        <PublicHeader title='首&nbsp;页' back />
         <section className='home_container'>
           <nav className='home_nav'>
             {
@@ -65,7 +66,7 @@ class Home extends Component {
           </nav>
           <TopicList currentTab={this.state.currentTab} tabs={this.state.navItems} />
         </section>
-        <PublicFooter />
+        <PublicFooter path={this.props.match.path} />
       </div>
     );
   }

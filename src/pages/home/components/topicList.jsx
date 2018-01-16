@@ -59,9 +59,22 @@ class TopicList extends Component {
                 </section>
                 <p className='topic_title'>{item.title}</p>
                 <section className='topic_amount'>
-                  <span className='topic_reply_count'>{item.reply_count}</span>
-                  <span className='topic_visit_count'>{item.visit_count}</span>
-                  <span className='topic_create_at'>一年前</span>
+                  <span className='topic_reply_count'>
+                    <svg className="icon" aria-hidden="true">
+                      <use xlinkHref='#icon-code'></use>
+                    </svg>
+                    {item.reply_count}
+                  </span>
+                  <span className='topic_visit_count'>
+                    <svg className="icon" aria-hidden="true">
+                      <use xlinkHref='#icon-browse'></use>
+                    </svg>{item.visit_count}
+                  </span>
+                  <span className='topic_create_at'>
+                    <svg className="icon" aria-hidden="true">
+                      <use xlinkHref='#icon-clock'></use>
+                    </svg>一年前
+                  </span>
                 </section>
               </Link>
             </li>
