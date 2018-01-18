@@ -7,8 +7,8 @@ export default class PublicFooter extends Component {
   state = {
     list: [
       { title: '首页', route: '/', icon: '#icon-home' },
-      { title: '发表', route: '/topics/create', icon: '#icon-jijianfasong-xianxing' },
-      { title: '消息', route: '/my/message', icon: '#icon-comments' },
+      { title: '发表', route: '/topics/create', icon: '#icon-daifasong' },
+      { title: '消息', route: '/my/message', icon: '#icon-14' },
       { title: '我的', route: '/my/selfInfo', icon: '#icon-account' },
     ]
   }

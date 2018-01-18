@@ -7,13 +7,12 @@ import './selfInfo.less';
 export default class SelfInfo extends Component {
 
   back = () => {
-    this.props.history.goBack
-    console.log(this.props.history)
+    this.props.history.goBack()
   }
   render () {
     return (
       <div>
-        <PublicHeader title='个人信息' />
+        <PublicHeader avatar history={this.props.history} logout title='个人信息' />
         <section className='self_container' >
           <Link to='/signIn'>登录</Link>
           <p onClick={this.back} >返回</p>

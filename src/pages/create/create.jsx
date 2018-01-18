@@ -8,7 +8,7 @@ export default class Create extends Component {
   render () {
     return (
       <div>
-        <PublicHeader title='发&nbsp;表' />
+        <PublicHeader avatar sent title='发&nbsp;表' />
         <section>
 
         </section>

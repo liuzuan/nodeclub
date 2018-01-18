@@ -33,7 +33,7 @@ class TopicDetail extends Component {
   render () {
     return (
       <div>
-        <PublicHeader title='主&nbsp;题' />
+        <PublicHeader back history={this.props.history} title='主&nbsp;题' />
         <section className='topic_content'>
           <div className='author'>
             <img className='author_avatar' src={this.state.author_avatar_url} alt="" />

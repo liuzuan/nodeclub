@@ -40,8 +40,6 @@ class Home extends Component {
     // console.log(this.props.match.path)
   }
 
-
-
   tabSelect (tab) {
     this.setState({
       currentTab: tab
@@ -51,7 +49,7 @@ class Home extends Component {
   render () {
     return (
       <div>
-        <PublicHeader title='首&nbsp;页' back />
+        <PublicHeader title='首&nbsp;页' avatar />
         <section className='home_container'>
           <nav className='home_nav'>
             {

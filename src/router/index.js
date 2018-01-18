@@ -7,6 +7,7 @@ import create from '../pages/create/create';
 import message from '../pages/my/message/message';
 import selfInfo from '../pages/my/selfInfo/selfInfo';
 import signIn from '../pages/signIn/signIn';
+
 export default class RouteConfig extends Component {
   render () {
     return (

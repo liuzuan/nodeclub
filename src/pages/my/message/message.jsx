@@ -7,7 +7,8 @@ export default class Message extends Component {
   render () {
     return (
       <div>
-        <PublicHeader title='个人消息' />
+        <PublicHeader avatar title='个人消息'>
+          </PublicHeader>
         <section>
 
         </section>
