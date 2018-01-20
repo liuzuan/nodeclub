@@ -1,42 +1,31 @@
 import React, { Component } from 'react';
 import './header.less';
-import store from '../../store/store';
-import { logout } from '../../store/action';
+import { clearUserInfo } from '../../store/action';
 import { removeItem } from '../../config/utils/localStorage';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 
 
 class PublicHeader extends Component {
-
-  state = {
-    img: ''
+  static propType = {
+    accessToken: PropTypes.string
   }
 
   componentWillMount () {
-    let isLogin = store.getState().userInfo.userInfo
-    if (isLogin) {
-      this.setState({
-        img: isLogin.avatar_url
-      })
-    }
+    // console.log(this.props)
   }
+  
   goBack () {
     this.props.history.goBack()
   }
 
   logout () {
-    if (store.getState().userInfo.userInfo) {
-      logout('')
-      removeItem('userInfo')
-      removeItem('accessToken')
-      this.props.history.push('/')
-    } else {
-      console.log('尚未登录')
-    }
-
+    this.props.clearUserInfo()
+    removeItem('userInfo')
   }
+
   render () {
     return (
       <header className='header_container'>
@@ -46,13 +35,15 @@ class PublicHeader extends Component {
               <use xlinkHref='#icon-back'></use>
             </svg>
           }
-          {this.props.avatar && this.state.img &&
+          {this.props.avatar && this.props.userInfo.avatar_url &&
             <Link to='/my/selfInfo'>
-              <img src={this.state.img} alt="" />
+              <img src={this.props.userInfo.avatar_url} alt="" />
             </Link>
           }
-          {!this.state.img && this.props.avatar &&
-            <Link to='/signIn' >登录</Link>
+          {!this.props.userInfo.avatar_url && this.props.avatar &&
+            <Link to='/signIn' ><svg className="icon" aria-hidden="true">
+              <use xlinkHref='#icon-my'></use>
+            </svg></Link>
           }
         </span>
         <span>{this.props.title}</span>
@@ -73,4 +64,6 @@ class PublicHeader extends Component {
   }
 }
 
-export default PublicHeader
+export default connect((state) => ({
+  userInfo:state.userInfo
+}),{clearUserInfo})(PublicHeader)

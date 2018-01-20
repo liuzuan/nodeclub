@@ -10,10 +10,10 @@ export const Login = (accesstoken) => axios('post', '/accesstoken', { accesstoke
 export const GetTopic = (topicId, accesstoken) => axios('get', '/topic/' + topicId, { accesstoken })
 
 // 收藏主题
-export const collect = (accesstoken, topicId) => axios('post', '/topic_collect/collect', { accesstoken, topicId })
+export const collect = (accesstoken, topic_id) => axios('post', '/topic_collect/collect', { accesstoken, topic_id })
 
 // 取消收藏主题
-export const deCollect = (accesstoken, topicId) => axios('post', '/topic_collect/de_collect', { accesstoken, topicId })
+export const deCollect = (accesstoken, topic_id) => axios('post', '/topic_collect/de_collect', { accesstoken, topic_id })
 
 // 新建主题
 export const createTopic = (accesstoken, title, tab, content) => axios('post', '/topics', { accesstoken, title, tab, content })

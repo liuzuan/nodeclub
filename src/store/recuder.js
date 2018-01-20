@@ -1,6 +1,7 @@
 import * as type from './action-type';
 
 let defaultState = {
+
 }
 
 export const userInfo = (state = defaultState, action = {}) => {
@@ -8,13 +9,13 @@ export const userInfo = (state = defaultState, action = {}) => {
     case type.SAVEUSERINFO:
       return {
         ...state,
-        ...action.payload,
+        ...action.userInfo,
       };
     case type.CLEARUSERINFO:
       return {
-        
-        // ...action.payload,
-      }
+        ...state,
+        ...action.userInfo,
+      }  
     default:
       return state;  
   }

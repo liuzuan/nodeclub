@@ -7,6 +7,7 @@ import create from '../pages/create/create';
 import message from '../pages/my/message/message';
 import selfInfo from '../pages/my/selfInfo/selfInfo';
 import signIn from '../pages/signIn/signIn';
+import about from '../pages/about/about';
 
 export default class RouteConfig extends Component {
   render () {
@@ -19,6 +20,7 @@ export default class RouteConfig extends Component {
           <Route path='/my/message' exact component={message} />
           <Route path='/my/selfInfo' exact component={selfInfo} />
           <Route path='/signIn' component={signIn} />
+          <Route path='/about' component={about} />
           <Redirect to="/" />
         </Switch>
       </Router>

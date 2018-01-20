@@ -37,7 +37,6 @@ class Home extends Component {
         currentTab: this.props.location.state.tab
       })
     }
-    // console.log(this.props.match.path)
   }
 
   tabSelect (tab) {

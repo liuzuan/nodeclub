@@ -16,9 +16,6 @@ class SignIn extends Component {
   state = {
     accessToken: '',
   }
-  componentDidMount () {
-    // console.log(this.props)
-  }
 
   handleChange (e) {
     this.setState({
@@ -30,10 +27,9 @@ class SignIn extends Component {
     if (this.state.accessToken) {
       let res = await Login(this.state.accessToken)
       if (res) {
-        console.log(res)
-        this.props.saveUserInfo(this.state.accessToken, res)
+        res.accessToken = this.state.accessToken
+        this.props.saveUserInfo(res)
         setItem('userInfo', res)
-        setItem('accessToken', this.state.accessToken)
         this.props.history.goBack()
       } else {
         console.log('登录失败')
@@ -58,9 +54,7 @@ class SignIn extends Component {
   }
 }
 
-export default connect(state => ({
-  accessToken: state.accessToken,
-}), {
+export default connect(state => ({}), {
     saveUserInfo,
 })(SignIn);
 

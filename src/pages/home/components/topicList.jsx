@@ -41,12 +41,10 @@ class TopicList extends Component {
   render () {
     return (
       <section className='topic_lists'>
-        
         {
           this.state.topicData.map((item, index) => {
             return <li className='topic_cell' key={item.id}>
               <Link to={`/topic/${item.id}`}>
-              {/* <Link to={{ pathname: `/topic/${item.id}`, query: {a: 123}, state: {b: 456} }}> */}
                 <section className='author'>
                   <img className='topic_cell_avatar' src={item.author.avatar_url} alt="" />
                   <div className='name_time'>
@@ -61,18 +59,18 @@ class TopicList extends Component {
                 <section className='topic_amount'>
                   <span className='topic_reply_count'>
                     <svg className="icon" aria-hidden="true">
-                      <use xlinkHref='#icon-code'></use>
+                      <use xlinkHref='#icon-changyonghuifu'></use>
                     </svg>
                     {item.reply_count}
                   </span>
                   <span className='topic_visit_count'>
                     <svg className="icon" aria-hidden="true">
-                      <use xlinkHref='#icon-browse'></use>
+                      <use xlinkHref='#icon-yanjing'></use>
                     </svg>{item.visit_count}
                   </span>
                   <span className='topic_create_at'>
                     <svg className="icon" aria-hidden="true">
-                      <use xlinkHref='#icon-clock'></use>
+                      <use xlinkHref='#icon-time'></use>
                     </svg>一年前
                   </span>
                 </section>

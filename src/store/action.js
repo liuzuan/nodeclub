@@ -1,17 +1,23 @@
 import * as type from './action-type';
 
 // 保存用户信息
-export const saveUserInfo = (accessToken, userInfo) => {
+export const saveUserInfo = (userInfo) => {
   return {
     type: type.SAVEUSERINFO,
-    payload: {accessToken, userInfo}
+    userInfo,
   }
 }
 
-export const logout = (payload) => {
+export const clearUserInfo = (userInfo) => {
   return {
     type: type.CLEARUSERINFO,
-    payload,
+    userInfo: {
+      accessToken: '',
+      avatar_url: '',
+      id: '',
+      loginname: '',
+      success: false,
+    }
   }
 }
 

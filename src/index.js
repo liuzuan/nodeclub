@@ -15,8 +15,8 @@ store.subscribe(() => {
   console.log('store发生了变化', store.getState());
 });
 
-if (localStorage.accessToken) {
-  store.dispatch(saveUserInfo(getItem('accessToken'), getItem('userInfo')))
+if (localStorage.userInfo) {
+  store.dispatch(saveUserInfo(getItem('userInfo')))
 }
 
 const render = Component => {
