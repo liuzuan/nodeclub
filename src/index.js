@@ -3,7 +3,6 @@ import store from './store/store'
 import Router from './router/';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import 'antd/dist/antd.less';
 import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
 import registerServiceWorker from './registerServiceWorker';

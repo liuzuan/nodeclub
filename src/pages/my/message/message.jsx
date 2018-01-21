@@ -18,9 +18,11 @@ class Message extends Component {
       showingMsg: [],// 展示中的消息
     };
     this.getMessage = async () => {
-      let res = await getMsg(this.props.accessToken)
-      this.setState({ message: res, showingMsg: res.has_read_messages })
-      console.log(this.state.showingMsg)
+      if (this.props.accessToken) {
+        let res = await getMsg(this.props.accessToken)
+        this.setState({ message: res, showingMsg: res.has_read_messages })
+        console.log(this.state.showingMsg)
+      }
     };
     this.createMarkup = (html) => {
       return {
@@ -61,7 +63,7 @@ class Message extends Component {
             </NavLink>
           </nav>
           <div className='message-list'>
-            {this.state.showingMsg.map((item, index) => {
+            {this.state.showingMsg && this.state.showingMsg.map((item, index) => {
               var { author, create_at, reply, topic, type } = item
               return <li className='list-cell' key={item.id} >
                 <img src={author.avatar_url} alt="" />
