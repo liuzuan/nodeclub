@@ -1,0 +1,74 @@
+@import '../../../style/mixin.less';
+
+.message-content {
+  margin-top: 50px;
+  nav {
+    position: fixed;
+    top: 49px;
+    left: 0;
+    .wh(100%, 40px);
+    display: flex;
+    z-index: 99;
+    background: #fff;
+    a {
+      .wh(50%,40px);
+      color: rgb(78, 77, 77);
+      line-height: 40px;
+      text-align: center;
+      border-bottom: 1px solid #ccc; 
+    }
+    a:first-child {
+      border-right: 1px solid #eee; 
+    }
+    .navList {
+      color: black;
+      padding: 0 8px;
+    }
+    .activeTab {
+      .navList;
+      color: @style-color;
+      border-bottom: 3px solid @style-color;
+    }
+  }
+}
+
+.message-list {
+  margin-top: 90px;
+  .list-cell {
+    padding: 10px;
+    .borderBottom;
+    overflow: hidden;
+    img {
+      float: left;
+      .wh(40px);
+      .circleImg;
+    }
+    div {
+      overflow: hidden;
+      .name-time {
+        width: 100%;
+        display: inline;
+        float: left;
+        span {
+          margin: 0 5px;
+        }
+        .name {
+          .font(15px, left, 400, black);
+        }
+        .time {
+          .font(13px, left, 300, #aaa)
+        }
+      }
+      .type {
+        width: 100%;
+        margin: 0 5px;
+      }
+    }
+    section {
+      margin: 10px;
+      padding: 0 10px;
+      border-radius: 5px;
+      background: #eee;
+    }
+  }
+}

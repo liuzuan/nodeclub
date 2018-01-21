@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
+import { GetTopic, collect, deCollect, ups, newReply } from '../../config/utils/getData';
 import { connect } from 'react-redux';
-import { GetTopic, collect, deCollect } from '../../config/utils/getData';
-import PublicHeader from '../../components/header/header';
+import { Link } from "react-router-dom";
 import './topic.less';
+import PublicHeader from '../../components/header/header';
+import { formatDate } from '../../config/utils/filter';
+import { message } from 'antd';
+import BackTop from '../../components/backTop/backTop';
 
+/**
+ * 模块入口
+ */
 class TopicDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: '',//主题详情数据
-      accessToken: this.props.accessToken || '',
+      accessToken: this.props.userInfo.accessToken || '',
+      current_reply: '',
     };
     this.getData = async () => { //获取主题详情数据
       let Data = await GetTopic(this.props.match.params.id, this.state.accessToken)
-      // console.log(Data)
       this.setState({
         data: Data,//所有数据
       })
@@ -27,71 +34,179 @@ class TopicDetail extends Component {
       if (!this.state.data.is_collect) {
         let res = await collect(this.state.accessToken, this.state.data.id)
         if (res.success) {
+          message.info('已收藏')
           await this.getData()
         }
       } else {
         let res = await deCollect(this.state.accessToken, this.state.data.id)
         if (res.success) {
+          message.info('已取消收藏')
           await this.getData()
         }
       }
     };
+    this.showReplyBox = (index) => { //显示回复框
+      if (this.state.accessToken) {
+        this.setState({ current_reply: index })
+      } else {
+        this.props.history.push('/signin')
+      }
+    };
+    this.ups = async (item) => { //评论点赞
+      console.log(item)
+      if (item.author.loginname !== this.props.userInfo.loginname) {
+        if (this.state.accessToken) {
+          let res = await ups(item.id, this.state.accessToken)
+          if (res.success) {
+            await this.getData()
+          }
+        } else {
+          this.props.history.push('/signin')
+        }
+      } else {
+        message.info('不可对自己点赞')
+      }
+    };
+    this.replySuccess = () => {//提交回复成功后关闭回复框
+      this.setState({
+        current_reply: ''
+      })
+    }
   }
-
 
   async componentWillMount (state) {
     await this.getData()
-    console.log(this.state.data)
+    // console.log(this.state.data.replies[0])
   }
 
-
-
   render () {
-    var { title, author, replies, is_collect, content } = this.state.data
+    var { title, author, replies, is_collect, content, create_at } = this.state.data
     return (
       <div>
         <PublicHeader back history={this.props.history} title='主&nbsp;题' />
         <section className='topic_content'>
-          <div className='author'>
-            <img className='author_avatar' src={author && author.avatar_url} alt="" />
-            <span className='author_name'>{author && author.loginname}</span>
-            <span onClick={this.handleCollect} className={is_collect ? 'isCollect' : 'collect'}>
-              <svg className='icon' aria-hidden="true">
-                <use xlinkHref='#icon-love'></use>
-              </svg>
-            </span>
-          </div>
+          {author &&
+            <div className='author'>
+              <Link to={`/user/${author.loginname}`}>
+                <img className='author_avatar' src={author.avatar_url} alt="" />
+                <div className='name-time' >
+                  <p className='author-name'>{author.loginname}</p>
+                  <p className='create-at' >{formatDate(create_at)}</p>
+                </div>
+              </Link>
+              <span onClick={this.handleCollect} className={is_collect ? 'isCollect' : 'collect'}>
+                <svg className='icon' aria-hidden="true">
+                  <use xlinkHref='#icon-love'></use>
+                </svg>
+              </span>
+            </div>
+          }
           <p className='topic_title'>{title}</p>
           <div className='markdown' dangerouslySetInnerHTML={this.createMarkup(content)} />
         </section>
         <section className='replies_content'>
-          {replies && replies.length > 0 &&
+          {
+            replies && replies.length > 0 &&
             <header className='replies_header'>
               共<span>{replies.length}</span>条回复
             </header>
           }
-          {replies && replies.map((item, index) => {
-            return <li className='reply_list' key={item.id}>
-              <section className='reply_author' >
-                <img className='reply_avatar' src={item.author.avatar_url} alt="" />
-                <div className='name_time' >
-                  <p className='reply_author_name' >{item.author.loginname}</p>
-                  <p className='item.create_at'>时间</p>
+          {
+            replies && replies.map((item, index) => {
+              var { id, content, author, ups, create_at, is_uped } = item;
+              return <li className='reply_list' key={id}>
+                <section className='reply_author' >
+                  <Link to={`/user/${author.loginname}`}>
+                    <img className='reply_avatar' src={author.avatar_url} alt="" />
+                    <div className='name_time' >
+                      <p className='reply_author_name' >{author.loginname}</p>
+                      <p className='create_at'>{formatDate(create_at)}</p>
+                    </div>
+                  </Link>
+                  <span className='reply_floor' >{index + 1}楼</span>
+                </section>
+                <section className='reply_content' dangerouslySetInnerHTML={this.createMarkup(content)} ></section>
+                <div className='operation' >
+                  <span className='click-reply' onClick={e => { this.showReplyBox(index, e) }} >
+                    <svg className='icon' aria-hidden="true">
+                      <use xlinkHref='#icon-iconfonthuifu'></use>
+                    </svg>
+                  </span>
+                  <span className='count' >{ups.length}</span>
+                  <span className={is_uped ? 'is_uped' : 'click-zan'} onClick={() => { this.ups(item) }} >
+                    <svg className='icon' aria-hidden="true">
+                      <use xlinkHref='#icon-good'></use>
+                    </svg>
+                  </span>
+
                 </div>
-                <span className='reply_floor' >{index + 1}楼</span>
-              </section>
-              <section className='reply_content' dangerouslySetInnerHTML={this.createMarkup(item.content)} ></section>
-              <div className='operation' >
-                <span></span>
-                <span>{item.ups.length}</span>
-                <span></span>
-              </div>
-            </li>
-          })}
+                <section>
+                  {this.state.current_reply === index &&
+                    <ReplyText placeholder={`@${author.loginname}`} getData={this.getData} replySuccess={this.replySuccess} loginname={author.loginname}
+                      data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id, reply_id: id }} />
+                  }
+                </section>
+              </li>
+            })
+          }
+
         </section>
+        <div className='reply' >
+          <ReplyText getData={this.getData} replySuccess={this.replySuccess} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+        </div>
+        <BackTop />
       </div >
     );
   }
 }
 
-export default connect(state => ({ accessToken: state.userInfo.accessToken }))(TopicDetail);
+
+/**
+ * 回复框
+ */
+class ReplyText extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+    /**
+     * 提交回复
+     */
+    this.submit = async () => {
+      let data = this.props.data
+      let reply_id, content
+      if (this.refs.content.value) {
+        if (data.reply_id) {
+          reply_id = data.reply_id
+          content = this.props.placeholder + ' ' + this.refs.content.value
+        } else {
+          reply_id = ''
+          content = this.refs.content.value
+        }
+        let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
+        if (res.success) {
+          message.info('回复成功')
+          await this.props.getData()
+          this.props.replySuccess()
+        }
+      } else {
+        message.info('内容不能为空')
+      }
+    }
+  }
+
+  componentWillMount () {
+    // console.log(this)
+  }
+  render () {
+    return (
+      <div className='reply-box' >
+        <textarea className='textarea' ref='content' placeholder={this.props.placeholder} ></textarea>
+        <input className='btn' onClick={this.submit} type="button" value='回复' />
+      </div>
+    )
+  }
+}
+
+export default connect(state => ({ userInfo: state.userInfo }))(TopicDetail);

@@ -3,12 +3,12 @@ import store from './store/store'
 import Router from './router/';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import 'antd/dist/antd.less';
 import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
 import registerServiceWorker from './registerServiceWorker';
 import { saveUserInfo } from './store/action.js'
 import { getItem } from './config/utils/localStorage';
-
 
 // 监听state变化
 store.subscribe(() => {

@@ -1,40 +1,44 @@
 @import (reference) '../../style/mixin.less';
-
 .topic_content {
   margin-top: 50px;
-  .shadowBottom;
-  margin-bottom: 15px;
   .author {
-    height: 41px;
+    overflow: hidden;
     padding: 10px;
     .borderBottom;
     .author_avatar {
       float: left;
       display: block;
-      .wh(40px,40px);
+      .wh(40px, 40px);
       .circleImg;
     }
-    .author_name {
+    .name-time {
       float: left;
       height: 40px;
-      line-height: 40px;
+      .author-name {
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+      .create-at {
+        margin-bottom: 0;
+        font-size: 14px;
+        color: #aaa;
+      }
     }
     .collect {
-      height:40px;
+      height: 40px;
       line-height: 40px;
       float: right;
-      color: rgb(65,67,57);
+      color: rgb(65, 67, 57);
       font-size: 28px;
     }
     .isCollect {
-      height:40px;
+      height: 40px;
       line-height: 40px;
       float: right;
-      color: rgb(65,67,57);
+      color: rgb(65, 67, 57);
       font-size: 28px;
       color: red;
     }
-
   }
   .topic_title {
     padding: 10px;
@@ -49,10 +53,11 @@
 }
 
 .replies_content {
-  .shadowBottom;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   .replies_header {
     padding: 10px;
-    .borderBottom;
+    border-bottom: 1px solid #ccc;
     span {
       color: red;
     }
@@ -64,23 +69,80 @@
     .reply_author {
       overflow: hidden;
       .reply_avatar {
-        .wh(40px,40px);
+        .wh(40px, 40px);
         .circleImg;
         float: left;
       }
       .name_time {
         float: left;
-        height: 40px;
         font-size: 14px;
+        .reply_author_name {
+          font-size: 16px;
+          margin-bottom: 0;
+        }
+        .create_at {
+          margin-bottom: 0;
+          color: #aaa;
+        }
       }
       .reply_floor {
         float: right;
-        height: 40px;
-        line-height: 40px;
+        font-size: 14px;
+        color: #ccc;
       }
     }
     .reply_content {
       padding: 0 10px;
     }
+    .operation {
+      width: 100%;
+      overflow: hidden;
+      span {
+        height: 20px;
+        line-height: 20px;
+        float: right;
+      }
+      .count {
+        width: 20px;
+        text-align: center;
+      }
+      .click-reply {
+        font-size: 20px;
+      }
+      .click-zan {
+        margin-top: -2px;
+        font-size: 18px;
+      }
+      .is_uped {
+        .click-zan;
+        color: red;
+      }
+    }
+  }
+}
+
+.reply {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.reply-box {
+  padding: 10px;
+  .textarea {
+    .wh(100%, 100px);
+    border: 1px solid #ccc;
+    outline: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    resize: none;
+  }
+  .btn {
+    float: right;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 5px;
+    background: @style-color;
   }
 }

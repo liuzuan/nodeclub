@@ -5,13 +5,20 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './selfInfo.less';
 import { user } from '../../../config/utils/getData';
+import { formatDate } from '../../../config/utils/filter';
 
 class SelfInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginname: this.props.userInfo.loginname,
+      loginname: this.props.userInfo.loginname || '',
       user: '',
+      navList: [
+        { title: '最近参与话题', route: '/my/message', icon: '#icon-14' },
+        { title: '最近创建话题', route: '/my/message', icon: '#icon-14' },
+        { title: '发表话题', route: '/topic/create', icon: '#icon-fasong' },
+        { title: '关于', route: '/about', icon: '#icon-svgabout' },
+      ]
     }
 
   }
@@ -20,16 +27,20 @@ class SelfInfo extends Component {
     if (this.state.loginname) {
       let res = await user(this.state.loginname)
       if (res) {
-        this.setState({
-          user: res
-        })
+        this.setState({ user: res })
       }
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.userInfo.loginname === '') {
+      this.setState({ user: '' })
     }
   }
 
   render () {
     var { avatar_url, loginname } = this.props.userInfo
-    var { score, recent_replies, recent_topics } = this.state.user
+    var { score, recent_replies, recent_topics, create_at } = this.state.user
     return (
       <div className='selfInfo-container' >
         <PublicHeader history={this.props.history} logout title='个人信息' />
@@ -41,7 +52,7 @@ class SelfInfo extends Component {
                 <p className='user-name' >{loginname}</p>
                 <div>
                   <p className='score' >积分：{score}</p>
-                  <p className='create-at' >注册于：一年前</p>
+                  <p className='create-at' >注册于：{formatDate(create_at)}</p>
                 </div>
               </section>
               :
@@ -55,34 +66,17 @@ class SelfInfo extends Component {
           </div>
         </section>
         <section className='nav' >
-          <Link to='/my/message' className='nav-item' >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref='#icon-14'></use>
-            </svg>
-            最近参与话题
-            <p className='amount' >{recent_replies? recent_replies.length : 0}</p>
-          </Link>
-          <Link to='/my/message' className='nav-item' >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref='#icon-14'></use>
-            </svg>
-            最近创建话题
-            <p className='amount' >{recent_topics ? recent_topics.length : 0}</p>
-          </Link>
-          <Link to='/topics/create' className='nav-item' >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref='#icon-fasong'></use>
-            </svg>
-            发表话题
-            <p className='amount' >go</p>
-          </Link>
-          <Link to='/about' className='nav-item' >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref='#icon-14'></use>
-            </svg>
-            关于
-            <p className='amount' >go</p>
-          </Link>
+          {this.state.navList.map(item => {
+            return <Link to={item.route} className='nav-item' key={item.title} >
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref={item.icon}></use>
+              </svg>
+              {item.title}
+              <p className='amount' >
+                {item.title === '最近参与话题' ? (recent_replies ? recent_replies.length : 0) : (item.title === '最近创建话题'? (recent_topics ? recent_topics.length : 0):'go')}
+              </p>
+            </Link>
+          })}
         </section>
         <PublicFooter path={this.props.match.path} />
       </div>

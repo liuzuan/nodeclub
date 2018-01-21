@@ -6,7 +6,7 @@ import './signIn.less'
 import { Login } from '../../config/utils/getData';
 import { saveUserInfo } from '../../store/action';
 import { setItem } from '../../config/utils/localStorage'
-
+import { message } from 'antd';
 
 class SignIn extends Component {
   static propTypes = {
@@ -27,15 +27,16 @@ class SignIn extends Component {
     if (this.state.accessToken) {
       let res = await Login(this.state.accessToken)
       if (res) {
+        message.info('登录成功')
         res.accessToken = this.state.accessToken
         this.props.saveUserInfo(res)
         setItem('userInfo', res)
         this.props.history.goBack()
       } else {
-        console.log('登录失败')
+        message.info('登录失败')
       }
     } else {
-      console.log('请输入')
+      message.info('请输入accessToken')
     }
   }
 

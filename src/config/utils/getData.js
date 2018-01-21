@@ -19,10 +19,10 @@ export const deCollect = (accesstoken, topic_id) => axios('post', '/topic_collec
 export const createTopic = (accesstoken, title, tab, content) => axios('post', '/topics', { accesstoken, title, tab, content })
 
 // 评论点赞
-export const ups = (replyId, accesstoken) => axios('post', '/reply/' + replyId + '/ups', { accesstoken })
+export const ups = (reply_id, accesstoken) => axios('post', '/reply/' + reply_id + '/ups', { accesstoken })
 
 // 新建评论
-export const newReply = (topicId, accesstoken, content, replyId) => axios('post', '/topic/' + topicId + '/replies', { accesstoken, content, replyId })
+export const newReply = (topic_id, accesstoken, reply_id, content) => axios('post', '/topic/' + topic_id + '/replies', { accesstoken, content, reply_id })
 
 // 用户信息
 export const user = (loginname) => axios('get', '/user/' + loginname)

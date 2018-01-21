@@ -5,6 +5,8 @@ import { removeItem } from '../../config/utils/localStorage';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { message } from 'antd';
+
 
 
 
@@ -13,20 +15,27 @@ class PublicHeader extends Component {
     accessToken: PropTypes.string
   }
 
-  componentWillMount () {
-    // console.log(this.props)
+  componentWillReceiveProps (nextProps) {
+    if (!nextProps.userInfo.loginname) {
+      message.info('成功退出')
+    }
   }
-  
+
   goBack () {
     this.props.history.goBack()
   }
 
-  logout () {
-    this.props.clearUserInfo()
-    removeItem('userInfo')
+  logout = () => {
+    if (this.props.userInfo.loginname) {
+      this.props.clearUserInfo()
+      removeItem('userInfo')
+    } else {
+      message.info('尚未登录')
+    }
   }
 
   render () {
+
     return (
       <header className='header_container'>
         <span className='left' >
@@ -41,20 +50,22 @@ class PublicHeader extends Component {
             </Link>
           }
           {!this.props.userInfo.avatar_url && this.props.avatar &&
-            <Link to='/signIn' ><svg className="icon" aria-hidden="true">
-              <use xlinkHref='#icon-my'></use>
-            </svg></Link>
+            <Link to='/signIn' >
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref='#icon-my'></use>
+              </svg></Link>
           }
         </span>
         <span>{this.props.title}</span>
         <span className='right'>
           {this.props.sent &&
-            <svg onClick={this.goBack.bind(this)} className="icon" aria-hidden="true">
+            <svg onClick={this.props.submit} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-fasong'></use>
             </svg>
           }
-          {this.props.logout &&
-            <svg onClick={this.logout.bind(this)} className="icon" aria-hidden="true">
+          {
+            this.props.logout &&
+            <svg onClick={this.logout} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-084tuichu'></use>
             </svg>
           }
@@ -65,5 +76,5 @@ class PublicHeader extends Component {
 }
 
 export default connect((state) => ({
-  userInfo:state.userInfo
-}),{clearUserInfo})(PublicHeader)
+  userInfo: state.userInfo
+}), { clearUserInfo })(PublicHeader)

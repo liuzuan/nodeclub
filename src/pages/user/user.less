@@ -1,0 +1,91 @@
+@import '../../style/mixin.less';
+@color: #fff;
+
+.user-container {
+  margin-top: 49px;
+  .user-info {
+    position: fixed;
+    top: 49px;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    background: @color;
+    z-index: 99;
+    overflow: hidden;
+    .borderBottom(#ccc);
+    img {
+      .wh(130px);
+      .circleImg;
+      float: left;
+      border: 1px solid #ccc;
+    }
+    div {
+      float: right;
+      height: 130px;
+      p {
+        line-height: 2.4;
+        text-align: right;
+      }
+      .name {
+        .font(26px, right, 500, black);
+      }
+    }
+  }
+  .user-topic {
+    nav {
+      position: fixed;
+      top: 242px;
+      left: 0;
+      .wh(100%, 40px);
+      line-height: 40px;
+      display: flex;
+      background: @color;
+      z-index: 99;
+      .borderBottom(#ccc);
+      p {
+        width: 50%;
+        text-align: center;
+      }
+      .active {
+        color: @style-color;
+        border-bottom: 3px solid @style-color;
+      }
+    }
+    .topic-list {
+      margin-top: 280px;
+      .topic-list-cell {
+        color: black;
+        padding: 10px;
+        .borderBottom;
+        header {
+          overflow: hidden;
+          img {
+            .wh(40px);
+            .circleImg;
+            float: left;
+          }
+          .name {
+            color: black;
+            height: 40px;
+            line-height: 40px;
+            float: left;
+          }
+          .time {
+            .name;
+            float: right;
+          }
+        }
+        .title {
+          display: block;
+          width: 80%;
+          margin: 0 auto;
+          padding: 5px;
+          font-size: 16px;
+          color: @style-color;
+          .text-overflow;
+        }
+      }
+    }
+  }
+}
