@@ -4,6 +4,7 @@ import { user } from "../../config/utils/getData";
 import { formatDate } from "../../config/utils/filter";
 import PublicHeader from '../../components/header/header';
 import { Link } from "react-router-dom";
+import { Anchor } from 'antd';
 
 class User extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class User extends Component {
     this.navChange = (navTab) => {
       let curTab = this.state.currentNavTab
       if (navTab === 'topic' && curTab !== 'topic') {
-        this.setState({showingTopic: this.state.data.recent_topics, currentNavTab: 'topic'})
+        this.setState({ showingTopic: this.state.data.recent_topics, currentNavTab: 'topic' })
       } else if (navTab === 'reply' && curTab !== 'reply') {
         this.setState({ showingTopic: this.state.data.recent_replies, currentNavTab: 'reply' })
       }
@@ -66,10 +67,12 @@ class User extends Component {
               </div>
             </section>
             <section className='user-topic' >
-              <nav>
-                <p onClick={this.navChange.bind(this, 'topic')} className={curTab==='topic'? 'active':''} >发表的话题</p>
-              <p onClick={this.navChange.bind(this, 'reply')} className={curTab === 'reply' ? 'active' : ''}>近期的回复</p>
-              </nav>
+              <Anchor offsetTop={50}>
+                <nav>
+                  <p onClick={this.navChange.bind(this, 'topic')} className={curTab === 'topic' ? 'active' : ''} >发表的话题</p>
+                  <p onClick={this.navChange.bind(this, 'reply')} className={curTab === 'reply' ? 'active' : ''}>回复的话题</p>
+                </nav>
+              </Anchor >
               <div className='topic-list' >
                 {this.state.showingTopic.map((item, index) => {
                   var { author, id, last_reply_at, title } = item

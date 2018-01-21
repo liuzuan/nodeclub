@@ -23,7 +23,7 @@ export default class RouteConfig extends Component {
           <Route path='/user/:id' component={user} />
           <Route path='/signIn' component={signIn} />
           <Route path='/about' component={about} />
-          <Redirect to="/" />
+          {/* <Redirect to="/" /> */}
         </Switch>
       </Router>
     )

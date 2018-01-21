@@ -14,7 +14,6 @@ class Create extends Component {
       let title = this.refs.title.value
       let tab = this.refs.tab.value
       let content = this.refs.content.value
-      // console.log()
       if (title.length < 10) {
         message.info('标题字数不足')
       } else if (!tab) {
@@ -30,6 +29,12 @@ class Create extends Component {
           message.info('发表失败')
         }
       }
+    }
+  }
+
+  componentWillMount(){
+    if (!this.props.accessToken) {
+      this.props.history.replace('/signin')
     }
   }
 

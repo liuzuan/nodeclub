@@ -1,12 +1,8 @@
 @import '../../style/mixin.less';
 @color: #fff;
-
 .user-container {
   margin-top: 49px;
   .user-info {
-    position: fixed;
-    top: 49px;
-    left: 0;
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
@@ -34,9 +30,6 @@
   }
   .user-topic {
     nav {
-      position: fixed;
-      top: 242px;
-      left: 0;
       .wh(100%, 40px);
       line-height: 40px;
       display: flex;
@@ -47,17 +40,22 @@
         width: 50%;
         text-align: center;
       }
+      p:first-child {
+        border-right: 1px solid #ccc;
+      }
       .active {
         color: @style-color;
-        border-bottom: 3px solid @style-color;
+        // border-bottom: 3px solid @style-color;
       }
     }
     .topic-list {
-      margin-top: 280px;
       .topic-list-cell {
         color: black;
         padding: 10px;
         .borderBottom;
+        a {
+          color: black;
+        }
         header {
           overflow: hidden;
           img {
@@ -66,7 +64,6 @@
             float: left;
           }
           .name {
-            color: black;
             height: 40px;
             line-height: 40px;
             float: left;
@@ -82,7 +79,6 @@
           margin: 0 auto;
           padding: 5px;
           font-size: 16px;
-          color: @style-color;
           .text-overflow;
         }
       }

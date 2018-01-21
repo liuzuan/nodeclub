@@ -32,7 +32,11 @@ class Message extends Component {
   }
 
   async componentWillMount () {
-    await this.getMessage()
+    if (this.props.accessToken) {
+      await this.getMessage()
+    } else {
+      this.props.history.replace('/signin')
+    }
   }
 
   componentWillReceiveProps (nextProps) {

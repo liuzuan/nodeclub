@@ -14,13 +14,23 @@ class SelfInfo extends Component {
       loginname: this.props.userInfo.loginname || '',
       user: '',
       navList: [
-        { title: '最近参与话题', route: '/my/message', icon: '#icon-14' },
-        { title: '最近创建话题', route: '/my/message', icon: '#icon-14' },
-        { title: '发表话题', route: '/topic/create', icon: '#icon-fasong' },
-        { title: '关于', route: '/about', icon: '#icon-svgabout' },
+        { id: '1', title: '最近回复', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14' },
+        { id: '2', title: '最近发表', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14' },
+        { id: '3', title: '发表话题', route: '/topic/create', icon: '#icon-fasong' },
+        { id: '4', title: '关于', route: '/about', icon: '#icon-svgabout' },
       ]
+    };
+    this.navClick = (item) => {
+      if (item.id !== '4') {
+        if (this.props.userInfo.loginname) {
+          this.props.history.push(item.route)
+        } else {
+          this.props.history.push('/signin')
+        }
+      } else {
+        this.props.history.push('/about')
+      }
     }
-
   }
 
   async componentWillMount () {
@@ -67,15 +77,15 @@ class SelfInfo extends Component {
         </section>
         <section className='nav' >
           {this.state.navList.map(item => {
-            return <Link to={item.route} className='nav-item' key={item.title} >
+            return <li onClick={this.navClick.bind(this, item)} className='nav-item' key={item.id} >
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref={item.icon}></use>
               </svg>
               {item.title}
               <p className='amount' >
-                {item.title === '最近参与话题' ? (recent_replies ? recent_replies.length : 0) : (item.title === '最近创建话题'? (recent_topics ? recent_topics.length : 0):'go')}
+                {item.title === '最近回复' ? (recent_replies ? recent_replies.length : 0) : (item.title === '最近发表' ? (recent_topics ? recent_topics.length : 0) : 'go')}
               </p>
-            </Link>
+            </li>
           })}
         </section>
         <PublicFooter path={this.props.match.path} />
