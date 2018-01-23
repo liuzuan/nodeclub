@@ -8,6 +8,7 @@ import { saveUserInfo } from '../../store/action';
 import { setItem } from '../../config/utils/localStorage'
 import { message } from 'antd';
 
+
 class SignIn extends Component {
   static propTypes = {
     saveUserInfo: PropTypes.func.isRequired,

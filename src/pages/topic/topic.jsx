@@ -6,7 +6,9 @@ import './topic.less';
 import PublicHeader from '../../common/header/header';
 import { formatDate } from '../../config/utils/filter';
 import { message } from 'antd';
-import {ToTop} from '../../common/index';
+
+import { ToTop, DataLoading } from '../../common/index';
+
 /**
  * 模块入口
  */
@@ -78,15 +80,42 @@ class TopicDetail extends Component {
 
   async componentWillMount (state) {
     await this.getData()
-    // console.log(this.state.data.replies[0])
   }
 
+
   render () {
-    var { title, author, replies, is_collect, content, create_at } = this.state.data
+    return (
+      <div className='topic-container' >
+        <PublicHeader back history={this.props.history} title='主&nbsp;题' />
+        {this.state.data ?
+          <section>
+            <Article data={this.state.data} handleCollect={this.handleCollect} createMarkup={this.createMarkup} />
+            <Reply data={this.state.data} showReplyBox={this.showReplyBox} createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
+            <div className='reply' >
+              <ReplyBox getData={this.getData} replySuccess={this.replySuccess} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+            </div>
+          </section> :
+          <div className='loading' ><DataLoading /></div>
+        }
+        <ToTop />
+      </div >
+    );
+  }
+}
+
+/**
+ * 主题文章部分
+ */
+class Article extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+  render () {
+    var { title, author, is_collect, content, create_at } = this.props.data
     return (
       <div>
-        <PublicHeader back history={this.props.history} title='主&nbsp;题' />
-        <section className='topic_content'>
+        <section className='article_content'>
           {author &&
             <div className='author'>
               <Link to={`/user/${author.loginname}`}>
@@ -96,7 +125,7 @@ class TopicDetail extends Component {
                   <p className='create-at' >{formatDate(create_at)}</p>
                 </div>
               </Link>
-              <span onClick={this.handleCollect} className={is_collect ? 'isCollect' : 'collect'}>
+              <span onClick={this.props.handleCollect} className={is_collect ? 'isCollect' : 'collect'}>
                 <svg className='icon' aria-hidden="true">
                   <use xlinkHref='#icon-love'></use>
                 </svg>
@@ -104,8 +133,26 @@ class TopicDetail extends Component {
             </div>
           }
           <p className='topic_title'>{title}</p>
-          <div className='markdown' dangerouslySetInnerHTML={this.createMarkup(content)} />
+          <div className='markdown' dangerouslySetInnerHTML={this.props.createMarkup(content)} />
         </section>
+      </div>
+    )
+  }
+}
+
+
+/**
+ * 主题回复部分
+ */
+class Reply extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+  render () {
+    let { replies } = this.props.data
+    return (
+      <div>
         <section className='replies_content'>
           {
             replies && replies.length > 0 &&
@@ -127,15 +174,15 @@ class TopicDetail extends Component {
                   </Link>
                   <span className='reply_floor' >{index + 1}楼</span>
                 </section>
-                <section className='reply_content' dangerouslySetInnerHTML={this.createMarkup(content)} ></section>
+                <section className='reply_content' dangerouslySetInnerHTML={this.props.createMarkup(content)} ></section>
                 <div className='operation' >
-                  <span className='click-reply' onClick={e => { this.showReplyBox(index, e) }} >
+                  <span className='click-reply' onClick={e => { this.props.showReplyBox(index, e) }} >
                     <svg className='icon' aria-hidden="true">
                       <use xlinkHref='#icon-iconfonthuifu'></use>
                     </svg>
                   </span>
                   <span className='count' >{ups.length}</span>
-                  <span className={is_uped ? 'is_uped' : 'click-zan'} onClick={() => { this.ups(item) }} >
+                  <span className={is_uped ? 'is_uped' : 'click-zan'} onClick={() => { this.props.ups(item) }} >
                     <svg className='icon' aria-hidden="true">
                       <use xlinkHref='#icon-good'></use>
                     </svg>
@@ -143,30 +190,28 @@ class TopicDetail extends Component {
 
                 </div>
                 <section>
-                  {this.state.current_reply === index &&
-                    <ReplyText placeholder={`@${author.loginname}`} getData={this.getData} replySuccess={this.replySuccess} loginname={author.loginname}
+                  {
+                    this.state.current_reply === index &&
+                    <ReplyBox placeholder={`@${author.loginname}`} getData={this.props.getData}
+                      replySuccess={this.props.replySuccess} loginname={author.loginname}
                       data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id, reply_id: id }} />
                   }
                 </section>
               </li>
             })
           }
-
         </section>
-        <div className='reply' >
-          <ReplyText getData={this.getData} replySuccess={this.replySuccess} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
-        </div>
-        <ToTop />
-      </div >
-    );
+      </div>
+    )
   }
 }
+
 
 
 /**
  * 回复框
  */
-class ReplyText extends Component {
+class ReplyBox extends Component {
   constructor(props) {
     super(props);
     this.state = {

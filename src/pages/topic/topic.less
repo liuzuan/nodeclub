@@ -1,148 +1,150 @@
 @import (reference) '../../style/mixin.less';
-.topic_content {
+.topic-container {
   margin-top: 50px;
-  .author {
-    overflow: hidden;
-    padding: 10px;
-    .borderBottom;
-    .author_avatar {
-      float: left;
-      display: block;
-      .wh(40px, 40px);
-      .circleImg;
-    }
-    .name-time {
-      float: left;
-      height: 40px;
-      .author-name {
-        margin-bottom: 0;
-        font-size: 18px;
-      }
-      .create-at {
-        margin-bottom: 0;
-        font-size: 14px;
-        color: #aaa;
-      }
-    }
-    .collect {
-      height: 40px;
-      line-height: 40px;
-      float: right;
-      color: rgb(65, 67, 57);
-      font-size: 28px;
-    }
-    .isCollect {
-      height: 40px;
-      line-height: 40px;
-      float: right;
-      color: rgb(65, 67, 57);
-      font-size: 28px;
-      color: red;
-    }
+  .loading {
+    margin-top: 30px;
   }
-  .topic_title {
-    padding: 10px;
-    .font(26px, center, 500, black)
-  }
-  .markdown {
-    padding: 10px;
-    a {
-      color: rgb(5, 63, 189);
-    }
-  }
-}
-
-.replies_content {
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  .replies_header {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    span {
-      color: red;
-    }
-  }
-  .reply_list {
-    .borderBottom;
-    padding: 10px;
-    overflow: hidden;
-    .reply_author {
+  .article_content {
+    .author {
       overflow: hidden;
-      .reply_avatar {
+      padding: 10px;
+      .borderBottom;
+      .author_avatar {
+        float: left;
+        display: block;
         .wh(40px, 40px);
         .circleImg;
-        float: left;
       }
-      .name_time {
+      .name-time {
         float: left;
-        font-size: 14px;
-        .reply_author_name {
-          font-size: 16px;
+        height: 40px;
+        .author-name {
           margin-bottom: 0;
+          font-size: 18px;
         }
-        .create_at {
+        .create-at {
           margin-bottom: 0;
+          font-size: 14px;
           color: #aaa;
         }
       }
-      .reply_floor {
+      .collect {
+        height: 40px;
+        line-height: 40px;
         float: right;
-        font-size: 14px;
-        color: #ccc;
+        color: rgb(65, 67, 57);
+        font-size: 28px;
       }
-    }
-    .reply_content {
-      padding: 0 10px;
-    }
-    .operation {
-      width: 100%;
-      overflow: hidden;
-      span {
-        height: 20px;
-        line-height: 20px;
+      .isCollect {
+        height: 40px;
+        line-height: 40px;
         float: right;
-      }
-      .count {
-        width: 20px;
-        text-align: center;
-      }
-      .click-reply {
-        font-size: 20px;
-      }
-      .click-zan {
-        margin-top: -2px;
-        font-size: 18px;
-      }
-      .is_uped {
-        .click-zan;
+        color: rgb(65, 67, 57);
+        font-size: 28px;
         color: red;
       }
     }
+    .topic_title {
+      padding: 10px;
+      .font(26px, center, 500, black)
+    }
+    .markdown {
+      padding: 10px;
+      a {
+        color: rgb(5, 63, 189);
+      }
+    }
   }
-}
-
-.reply {
-  padding: 10px;
-  margin-bottom: 20px;
-}
-
-.reply-box {
-  padding: 10px;
-  .textarea {
-    .wh(100%, 100px);
-    border: 1px solid #ccc;
-    outline: 0;
-    padding: 5px;
-    box-sizing: border-box;
-    resize: none;
+  .replies_content {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    .replies_header {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      span {
+        color: red;
+      }
+    }
+    .reply_list {
+      .borderBottom;
+      padding: 10px;
+      overflow: hidden;
+      .reply_author {
+        overflow: hidden;
+        .reply_avatar {
+          .wh(40px, 40px);
+          .circleImg;
+          float: left;
+        }
+        .name_time {
+          float: left;
+          font-size: 14px;
+          .reply_author_name {
+            font-size: 16px;
+            margin-bottom: 0;
+          }
+          .create_at {
+            margin-bottom: 0;
+            color: #aaa;
+          }
+        }
+        .reply_floor {
+          float: right;
+          font-size: 14px;
+          color: #ccc;
+        }
+      }
+      .reply_content {
+        padding: 0 10px;
+      }
+      .operation {
+        width: 100%;
+        overflow: hidden;
+        span {
+          height: 20px;
+          line-height: 20px;
+          float: right;
+        }
+        .count {
+          width: 20px;
+          text-align: center;
+        }
+        .click-reply {
+          font-size: 20px;
+        }
+        .click-zan {
+          margin-top: -2px;
+          font-size: 18px;
+        }
+        .is_uped {
+          .click-zan;
+          color: red;
+        }
+      }
+    }
   }
-  .btn {
-    float: right;
-    outline: none;
-    color: #fff;
-    font-size: 14px;
-    padding: 2px 6px;
-    border-radius: 5px;
-    background: @style-color;
+  .reply {
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .reply-box {
+    padding: 10px;
+    .textarea {
+      .wh(100%, 100px);
+      border: 1px solid #ccc;
+      outline: 0;
+      padding: 5px;
+      box-sizing: border-box;
+      resize: none;
+    }
+    .btn {
+      float: right;
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: @style-color;
+    }
   }
 }

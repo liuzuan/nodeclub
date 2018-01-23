@@ -11,14 +11,15 @@ import message from '../pages/my/message/message';
 import selfInfo from '../pages/my/selfInfo/selfInfo';
 
 const requireAuth = (nextState, replace, next) => {
-  if (localStorage.userInfo) {
-    console.log(333)
-    next()
-  } else {
-    replace('/signIn')
-    console.log(nextState,222)
-    next()
-  }
+  console.log(1111)
+  // if (localStorage.userInfo) {
+  //   console.log(333)
+  //   next()
+  // } else {
+  //   replace('/signIn')
+  //   console.log(nextState,222)
+  //   next()
+  // }
 }
 export default class RouteConfig extends Component {
   render () {

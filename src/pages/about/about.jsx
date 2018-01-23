@@ -23,7 +23,7 @@ export default class About extends Component {
           <li>页面跳转，不再执行此页面的ajax请求</li>
           <br />
           <ul>技术栈：</ul>
-          <li>react + react-router-dom + redux + ES6/7 + less 重写cnode社区，使用webpack打包</li>
+          <li>react + react-router V4 + redux + ES6/7 + less 重写cnode社区，使用webpack打包</li>
         </section>
       </div>
     )

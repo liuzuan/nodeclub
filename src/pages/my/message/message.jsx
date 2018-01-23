@@ -34,7 +34,7 @@ class Message extends Component {
 
   async componentWillMount () {
     if (this.props.location.pathname === '/my/message') {
-      this.props.history.push('/my/message/has_read')
+      this.props.history.replace('/my/message/has_read')
     }
     if (this.props.accessToken) {
       await this.getMessage()
@@ -64,7 +64,9 @@ class Message extends Component {
         <section className='message-content'>
           {
             !this.state.showingMsg.length ?
-              <NullData /> :
+              <div className='nomsg' >
+                <NullData />
+              </div>:
               <div className='message-list'>
                 {this.state.showingMsg.map((item, index) => {
                   var { author, create_at, reply, topic, type } = item
