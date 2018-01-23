@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { BackTop } from 'antd';
-import './backTop.less';
+import './index.less';
 
-export default class GoTop extends Component{
+export class NullData extends Component {
+  render() { 
+    return (
+      <div className='nullData' >
+        <p>暂无消息</p>
+      </div>
+    )
+  }
+}
+
+export class ToTop extends Component {
   render () {
     return (
       <div className='backTop' >
@@ -15,3 +25,6 @@ export default class GoTop extends Component{
     )
   }
 }
+
+
+ 

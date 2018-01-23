@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../components/header/header';
-import PublicFooter from '../../components/footer/footer';
+import PublicHeader from '../../common/header/header';
+import PublicFooter from '../../common/footer/footer';
 import './create.less';
 import { connect } from 'react-redux';
 import { createTopic } from '../../config/utils/getData';

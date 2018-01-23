@@ -1,8 +1,10 @@
+
+
 import React, { Component } from 'react';
 import './user.less';
 import { user } from "../../config/utils/getData";
 import { formatDate } from "../../config/utils/filter";
-import PublicHeader from '../../components/header/header';
+import PublicHeader from '../../common/header/header';
 import { Link } from "react-router-dom";
 import { Anchor } from 'antd';
 
@@ -12,25 +14,30 @@ class User extends Component {
     this.state = {
       data: '',
       showingTopic: [],
-      currentNavTab: 'topic',
+      currentNavTab: this.props.location.state.type || 'recent_topics',
     };
+    
     this.getData = async (name) => { // 获取用户信息数据
+      let type = this.props.location.state.type || ''
       let res = await user(name)
       if (res) {
-        this.setState({ data: res, showingTopic: res.recent_topics })
-      }
+        this.setState({ data: res, showingTopic: res[type? type : 'recent_topics'] })
+      } 
     };
+
     this.navChange = (navTab) => {
       let curTab = this.state.currentNavTab
-      if (navTab === 'topic' && curTab !== 'topic') {
-        this.setState({ showingTopic: this.state.data.recent_topics, currentNavTab: 'topic' })
-      } else if (navTab === 'reply' && curTab !== 'reply') {
-        this.setState({ showingTopic: this.state.data.recent_replies, currentNavTab: 'reply' })
+      if (navTab === 'recent_topics' && curTab !== 'recent_topics') {
+        // console.log(1)
+        this.setState({ showingTopic: this.state.data.recent_topics, currentNavTab: 'recent_topics' })
+      } else if (navTab === 'recent_replies' && curTab !== 'recent_replies') {
+        this.setState({ showingTopic: this.state.data.recent_replies, currentNavTab: 'recent_replies' })
       }
     }
   }
 
   async componentWillMount () {
+    console.log(this.props)
     let loginname = this.props.match.params.id || ''
     await this.getData(loginname)
   }
@@ -56,7 +63,7 @@ class User extends Component {
     return (
       <div>
         <PublicHeader back title='用户信息' history={this.props.history} />
-        {this.state.data &&
+        {this.state.showingTopic &&
           <div className='user-container' >
             <section className='user-info' >
               <img src={avatar_url} alt="" />
@@ -69,8 +76,8 @@ class User extends Component {
             <section className='user-topic' >
               <Anchor offsetTop={50}>
                 <nav>
-                  <p onClick={this.navChange.bind(this, 'topic')} className={curTab === 'topic' ? 'active' : ''} >发表的话题</p>
-                  <p onClick={this.navChange.bind(this, 'reply')} className={curTab === 'reply' ? 'active' : ''}>回复的话题</p>
+                <p onClick={this.navChange.bind(this, 'recent_topics')} className={curTab === 'recent_topics' ? 'active' : ''} >发表的话题</p>
+                <p onClick={this.navChange.bind(this, 'recent_replies')} className={curTab === 'recent_replies' ? 'active' : ''}>回复的话题</p>
                 </nav>
               </Anchor >
               <div className='topic-list' >
@@ -83,7 +90,7 @@ class User extends Component {
                         <p className='name' >{author.loginname}</p>
                         <p className='time' >{formatDate(last_reply_at)}</p>
                       </header>
-                      <p className='title' >{title}</p>
+                      <p className='title' >主题：{title}</p>
                     </Link>
                   </li>
                 })}
@@ -97,3 +104,4 @@ class User extends Component {
 }
 
 export default User;
+ 

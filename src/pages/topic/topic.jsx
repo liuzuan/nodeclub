@@ -3,11 +3,10 @@ import { GetTopic, collect, deCollect, ups, newReply } from '../../config/utils/
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import './topic.less';
-import PublicHeader from '../../components/header/header';
+import PublicHeader from '../../common/header/header';
 import { formatDate } from '../../config/utils/filter';
 import { message } from 'antd';
-import BackTop from '../../components/backTop/backTop';
-
+import {ToTop} from '../../common/index';
 /**
  * 模块入口
  */
@@ -31,18 +30,22 @@ class TopicDetail extends Component {
       }
     };
     this.handleCollect = async () => { // (取消)收藏主题
-      if (!this.state.data.is_collect) {
-        let res = await collect(this.state.accessToken, this.state.data.id)
-        if (res.success) {
-          message.info('已收藏')
-          await this.getData()
+      if (this.props.userInfo.accessToken) {
+        if (!this.state.data.is_collect) {
+          let res = await collect(this.state.accessToken, this.state.data.id)
+          if (res.success) {
+            // message.info('已收藏')
+            await this.getData()
+          }
+        } else {
+          let res = await deCollect(this.state.accessToken, this.state.data.id)
+          if (res.success) {
+            // message.info('已取消收藏')
+            await this.getData()
+          }
         }
       } else {
-        let res = await deCollect(this.state.accessToken, this.state.data.id)
-        if (res.success) {
-          message.info('已取消收藏')
-          await this.getData()
-        }
+        this.props.history.push('/signin')
       }
     };
     this.showReplyBox = (index) => { //显示回复框
@@ -53,7 +56,6 @@ class TopicDetail extends Component {
       }
     };
     this.ups = async (item) => { //评论点赞
-      console.log(item)
       if (item.author.loginname !== this.props.userInfo.loginname) {
         if (this.state.accessToken) {
           let res = await ups(item.id, this.state.accessToken)
@@ -154,7 +156,7 @@ class TopicDetail extends Component {
         <div className='reply' >
           <ReplyText getData={this.getData} replySuccess={this.replySuccess} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
         </div>
-        <BackTop />
+        <ToTop />
       </div >
     );
   }
@@ -196,9 +198,6 @@ class ReplyText extends Component {
     }
   }
 
-  componentWillMount () {
-    // console.log(this)
-  }
   render () {
     return (
       <div className='reply-box' >

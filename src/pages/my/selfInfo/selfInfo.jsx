@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../../components/header/header';
-import PublicFooter from '../../../components/footer/footer';
+import PublicHeader from '../../../common/header/header';
+import PublicFooter from '../../../common/footer/footer';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './selfInfo.less';
@@ -14,8 +14,8 @@ class SelfInfo extends Component {
       loginname: this.props.userInfo.loginname || '',
       user: '',
       navList: [
-        { id: '1', title: '最近回复', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14' },
-        { id: '2', title: '最近发表', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14' },
+        { id: '1', title: '最近发表', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type:'recent_topics' },
+        { id: '2', title: '最近回复', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type:'recent_replies' },
         { id: '3', title: '发表话题', route: '/topic/create', icon: '#icon-fasong' },
         { id: '4', title: '关于', route: '/about', icon: '#icon-svgabout' },
       ]
@@ -23,7 +23,7 @@ class SelfInfo extends Component {
     this.navClick = (item) => {
       if (item.id !== '4') {
         if (this.props.userInfo.loginname) {
-          this.props.history.push(item.route)
+          this.props.history.push({pathname:item.route, state:{type:item.type}})
         } else {
           this.props.history.push('/signin')
         }

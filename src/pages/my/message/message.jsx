@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../../components/header/header';
-import PublicFooter from '../../../components/footer/footer';
+import PublicHeader from '../../../common/header/header';
+import PublicFooter from '../../../common/footer/footer';
+import { NullData } from '../../../common/index';
 import './message.less';
 import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -20,8 +21,8 @@ class Message extends Component {
     this.getMessage = async () => {
       if (this.props.accessToken) {
         let res = await getMsg(this.props.accessToken)
-        this.setState({ message: res, showingMsg: res.has_read_messages })
-        console.log(this.state.showingMsg)
+        let state = this.props.location.state
+        this.setState({ message: res, showingMsg: res[state ? state.type : 'has_read_messages'] })
       }
     };
     this.createMarkup = (html) => {
@@ -32,6 +33,9 @@ class Message extends Component {
   }
 
   async componentWillMount () {
+    if (this.props.location.pathname === '/my/message') {
+      this.props.history.push('/my/message/has_read')
+    }
     if (this.props.accessToken) {
       await this.getMessage()
     } else {
@@ -40,50 +44,52 @@ class Message extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log(nextProps.match.params.id)
-    // if (this.props !== nextProps) {
-    //   if (nextProps.match.params.id === 'hasnot_read') {
-    //     this.setState({ showingMsg: this.state.message.hasnot_read_messages })
-    //   } else {
-    //     this.setState({ showingMsg: this.state.message.has_read_messages })
-    //   }
-    // }
-    console.log(nextProps)
+    if (nextProps.location.state !== this.props.location.state) {
+      this.setState({ showingMsg: this.state.message[nextProps.location.state.type] })
+    }
   }
-
-  
 
   render () {
     return (
-      <div>
+      <div className='message' >
         <PublicHeader avatar title='个人消息'></PublicHeader>
+        <nav>
+          <NavLink to={{ pathname: '/my/message/has_read', state: { type: 'has_read_messages' } }} activeClassName='activeTab' >
+            <p>已读消息</p>
+          </NavLink>
+          <NavLink to={{ pathname: '/my/message/hasnot_read', state: { type: 'hasnot_read_messages' } }} activeClassName='activeTab' >
+            <p>未读消息</p>
+          </NavLink>
+        </nav>
         <section className='message-content'>
-          <nav>
-            <NavLink to='/my/message/has_read' activeClassName='activeTab' >
-              <p>已读消息</p>
-            </NavLink>
-            <NavLink to='/my/message/hasnot_read' activeClassName='activeTab' >
-              <p>未读消息</p>
-            </NavLink>
-          </nav>
-          <div className='message-list'>
-            {this.state.showingMsg && this.state.showingMsg.map((item, index) => {
-              var { author, create_at, reply, topic, type } = item
-              return <li className='list-cell' key={item.id} >
-                <img src={author.avatar_url} alt="" />
-                <div>
-                  <p className='name-time' >
-                    <span className='name' >{author.loginname}</span>
-                    <span className='time' >{formatDate(create_at)}</span>
-                  </p>
-                  <p className='type' >在话题<Link to={`/topic/${topic.id}`} >{topic.title}</Link>中{type === 'reply' ? '回复' : '@'}了你</p>
-                </div>
-                <section >
-                  <p dangerouslySetInnerHTML={this.createMarkup(reply.content)}></p>
-                </section>
-              </li>
-            })}
-          </div>
+          {
+            !this.state.showingMsg.length ?
+              <NullData /> :
+              <div className='message-list'>
+                {this.state.showingMsg.map((item, index) => {
+                  var { author, create_at, reply, topic, type } = item
+                  return <li className='list-cell' key={item.id} >
+                    <Link to={`/user/${author.loginname}`}>
+                      <img src={author.avatar_url} alt="" />
+                    </Link>
+                    <div>
+                      <p className='name-time' >
+                        <Link to={`/user/${author.loginname}`}>
+                          <span className='name' >{author.loginname}</span>
+                        </Link>
+                        <span className='time' >{formatDate(create_at)}</span>
+                      </p>
+                      <Link to={`/topic/${topic.id}`} >
+                        <p className='type' >在话题{topic.title}中{type === 'reply' ? '回复' : '@'}了你</p>
+                      </Link>
+                    </div>
+                    <Link to={`/topic/${topic.id}`} className='message-text' >
+                      <p dangerouslySetInnerHTML={this.createMarkup(reply.content)}></p>
+                    </Link>
+                  </li>
+                })}
+              </div>
+          }
         </section>
         <PublicFooter path={this.props.match.path} />
       </div>

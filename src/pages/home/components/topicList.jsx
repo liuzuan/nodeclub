@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './topicList.less';
-import { formatDate } from '../../../config/utils/filter';
 import { HomeData } from '../../../config/utils/getData';
+import { formatDate } from '../../../config/utils/filter';
 
 class TopicList extends Component {
 

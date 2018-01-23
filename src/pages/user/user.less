@@ -1,5 +1,6 @@
-@import '../../style/mixin.less';
+@import (reference) '../../style/mixin.less';
 @color: #fff;
+
 .user-container {
   margin-top: 49px;
   .user-info {
@@ -11,16 +12,15 @@
     overflow: hidden;
     .borderBottom(#ccc);
     img {
-      .wh(130px);
+      .wh(100px);
       .circleImg;
       float: left;
       border: 1px solid #ccc;
     }
     div {
       float: right;
-      height: 130px;
       p {
-        line-height: 2.4;
+        line-height: 1.6;
         text-align: right;
       }
       .name {
@@ -45,7 +45,7 @@
       }
       .active {
         color: @style-color;
-        // border-bottom: 3px solid @style-color;
+        background: #ccc;
       }
     }
     .topic-list {
@@ -70,6 +70,7 @@
           }
           .time {
             .name;
+            color: #aaa;
             float: right;
           }
         }

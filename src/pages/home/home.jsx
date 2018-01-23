@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import PublicHeader from '../../components/header/header';
-import PublicFooter from '../../components/footer/footer';
+import PublicHeader from '../../common/header/header';
+import PublicFooter from '../../common/footer/footer';
 import TopicList from './components/topicList';
 import './home.less';
-import BackTop from '../../components/backTop/backTop';
+import {ToTop} from '../../common/index';
 
 class Home extends Component {
 
@@ -65,7 +65,7 @@ class Home extends Component {
           <TopicList currentTab={this.state.currentTab} tabs={this.state.navItems} />
         </section>
         <PublicFooter path={this.props.match.path} />
-        <BackTop/>
+        <ToTop/>
       </div>
     );
   }
