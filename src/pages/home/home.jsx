@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import './home.less';
 import PublicHeader from '../../common/header/header';
 import PublicFooter from '../../common/footer/footer';
-import './home.less';
-import { ToTop } from '../../common/index';
-import { formatDate } from '../../config/utils/filter';
-import { HomeData } from '../../config/utils/getData';
+import { formatDate, scollBar } from '../../config/utils/tool';
+import { saveScrollBar, saveHomeData, saveHomeTab } from '../../store/action.js';
 import { DataLoading } from '../../common/index';
+import { HomeData } from '../../config/utils/getData';
+import { connect } from 'react-redux';
+import { ToTop } from '../../common/index';
+import { Link } from 'react-router-dom';
 
 /**
  * 
@@ -47,7 +49,7 @@ class Home extends Component {
           return k['title']
         }
       }
-    }
+    };
   }
 
   /**
@@ -70,14 +72,35 @@ class Home extends Component {
    * 挂载前获取首页数据
   */
   async componentWillMount () {
+    if (this.props.homeData.tab) {
+      let homeData = this.props.homeData
+      let left = homeData.scrollBar.left
+      let top = homeData.scrollBar.top
+      this.setState({
+        topicData: homeData.data,
+        currentTab: homeData.tab
+      })
+      setTimeout(() => { window.scrollTo(left, top) }, 100)
+    } else {
+      this.setState({
+        topicData: await HomeData(1, this.state.currentTab, 20)
+      })
+    }
     if (Boolean(this.props.location.state)) {
       this.setState({
         currentTab: this.props.location.state.tab
       })
     }
-    this.setState({
-      topicData: await HomeData(1, this.state.currentTab, 20)
-    })
+
+  }
+  /** 
+   * 获取滚动条并记录到store
+  */
+  componentWillUnmount () {
+    let scrollBar = scollBar()
+    this.props.saveScrollBar(scrollBar)
+    this.props.saveHomeData(this.state.topicData)
+    this.props.saveHomeTab(this.state.currentTab)
   }
 
   render () {
@@ -98,7 +121,7 @@ class Home extends Component {
           </nav>
           <TopicList
             currentTab={this.state.currentTab} formatTab={this.formatTab}
-            data={this.state.topicData} tabs={this.state.navItems} />
+            data={this.state.topicData} tabs={this.state.navItems} />:
         </section>
         <PublicFooter path={this.props.match.path} />
         <ToTop />
@@ -154,7 +177,7 @@ class TopicList extends Component {
                   </section>
                 </Link>
               </li>
-            }):
+            }) :
             <div className='loading' ><DataLoading /></div>
           }
         </section>
@@ -163,4 +186,8 @@ class TopicList extends Component {
   }
 }
 
-export default Home;
+export default connect(state => ({
+  homeData: state.home
+}), {
+    saveScrollBar, saveHomeData, saveHomeTab
+  })(Home);

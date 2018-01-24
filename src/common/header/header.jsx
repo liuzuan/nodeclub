@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './header.less';
 import { clearUserInfo } from '../../store/action';
-import { removeItem } from '../../config/utils/localStorage';
-import { Link } from 'react-router-dom';
+import { removeItem } from '../../config/utils/tool';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
@@ -15,12 +15,6 @@ class PublicHeader extends Component {
     accessToken: PropTypes.string
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (!nextProps.userInfo.loginname) {
-      message.info('成功退出')
-    }
-  }
-
   goBack () {
     this.props.history.goBack()
   }
@@ -29,6 +23,7 @@ class PublicHeader extends Component {
     if (this.props.userInfo.loginname) {
       this.props.clearUserInfo()
       removeItem('userInfo')
+      message.info('已退出登录')
     } else {
       message.info('尚未登录')
     }
@@ -75,6 +70,7 @@ class PublicHeader extends Component {
   }
 }
 
-export default connect((state) => ({
+
+export default withRouter(connect((state) => ({
   userInfo: state.userInfo
-}), { clearUserInfo })(PublicHeader)
+}), { clearUserInfo })(PublicHeader))

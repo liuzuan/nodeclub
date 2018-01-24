@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import './topic.less';
 import PublicHeader from '../../common/header/header';
-import { formatDate } from '../../config/utils/filter';
+import { formatDate } from '../../config/utils/tool';
 import { message } from 'antd';
 
 import { ToTop, DataLoading } from '../../common/index';
@@ -86,7 +86,7 @@ class TopicDetail extends Component {
   render () {
     return (
       <div className='topic-container' >
-        <PublicHeader back history={this.props.history} title='主&nbsp;题' />
+        <PublicHeader back title='主&nbsp;题' />
         {this.state.data ?
           <section>
             <Article data={this.state.data} handleCollect={this.handleCollect} createMarkup={this.createMarkup} />

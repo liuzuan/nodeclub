@@ -5,7 +5,7 @@ import PublicHeader from '../../common/header/header';
 import './signIn.less'
 import { Login } from '../../config/utils/getData';
 import { saveUserInfo } from '../../store/action';
-import { setItem } from '../../config/utils/localStorage'
+import { setItem } from '../../config/utils/tool';
 import { message } from 'antd';
 
 
@@ -16,6 +16,7 @@ class SignIn extends Component {
 
   state = {
     accessToken: '',
+    from: '',
   }
 
   handleChange (e) {
@@ -32,7 +33,11 @@ class SignIn extends Component {
         res.accessToken = this.state.accessToken
         this.props.saveUserInfo(res)
         setItem('userInfo', res)
-        this.props.history.goBack()
+        if (this.state.from) {
+          this.props.history.push(`${this.state.from}`)
+        } else {
+          this.props.history.goBack()
+        }
       } else {
         message.info('登录失败')
       }
@@ -41,10 +46,17 @@ class SignIn extends Component {
     }
   }
 
+  componentWillMount() {
+    console.log(this.props)
+    if (this.props.location.state) {
+      this.setState({ from: this.props.location.state.from.pathname})
+    }
+  }
+
   render () {
     return (
       <div>
-        <PublicHeader history={this.props.history} title='登&nbsp;录' back />
+        <PublicHeader title='登&nbsp;录' back />
         <form className='signIn_container' >
           <input className='text' type="text" value={this.state.accessToken}
             onChange={this.handleChange.bind(this)} placeholder='AccessToken' />

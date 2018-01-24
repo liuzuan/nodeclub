@@ -7,7 +7,7 @@ export default class About extends Component {
   render () {
     return (
       <div>
-        <PublicHeader history={this.props.history} title='关于' back />
+        <PublicHeader title='关于' back />
         <section className='about-container' >
           <ul>功能：</ul>
           <li>登录</li>

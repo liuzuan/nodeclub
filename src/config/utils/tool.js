@@ -20,3 +20,28 @@ export const formatDate = (value) => {
     return (time / 31536000000).toFixed(0) + '年前'
   }
 }
+
+
+export const setItem = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+export const getItem = (key) => {
+  if (localStorage.key) {
+    return JSON.parse(localStorage.getItem(key))
+  }
+};
+export const removeItem = (key) => localStorage.removeItem(key)
+
+
+export const scollBar = () => {
+  let t, l;
+  if (document.documentElement && document.documentElement.scrollTop) {
+    t = document.documentElement.scrollTop;
+    l = document.documentElement.scrollLeft;
+  } else if (document.body) {
+    t = document.body.scrollTop;
+    l = document.body.scrollLeft;
+  }
+  return {
+    top: t,
+    left: l,
+  };
+}

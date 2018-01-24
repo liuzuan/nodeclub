@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PublicHeader from '../../common/header/header';
 import PublicFooter from '../../common/footer/footer';
+import { createTopic } from '../../config/utils/getData';
 import './create.less';
 import { connect } from 'react-redux';
-import { createTopic } from '../../config/utils/getData';
 import { message } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 class Create extends Component {
   constructor(props) {
@@ -32,13 +33,18 @@ class Create extends Component {
     }
   }
 
-  componentWillMount(){
+  componentWillMount () {
     if (!this.props.accessToken) {
-      this.props.history.replace('/signin')
+      // console.log(this)
+      // this.props.history.replace('/signin')
+      // return <Redirect to={{pathname:'/signin'}} />
     }
   }
 
   render () {
+    if (!this.props.accessToken) {
+      return <Redirect to={{ pathname: '/signin', state: { from: this.props.location } }} />
+    }
     return (
       <div>
         <PublicHeader avatar sent title='发&nbsp;表' submit={this.submit} />

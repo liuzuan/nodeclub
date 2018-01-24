@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './selfInfo.less';
 import { user } from '../../../config/utils/getData';
-import { formatDate } from '../../../config/utils/filter';
+import { formatDate } from '../../../config/utils/tool';
 
 class SelfInfo extends Component {
   constructor(props) {
@@ -21,14 +21,16 @@ class SelfInfo extends Component {
       ]
     };
     this.navClick = (item) => {
-      if (item.id !== '4') {
+      if (item.id === '3') {
+          this.props.history.push({pathname:item.route, state:{from:this.props.location}})
+      } else if (item.id === '4'){
+        this.props.history.push('/about')
+      } else {
         if (this.props.userInfo.loginname) {
-          this.props.history.push({pathname:item.route, state:{type:item.type}})
+          this.props.history.push({ pathname: item.route, state: { type: item.type} })
         } else {
           this.props.history.push('/signin')
         }
-      } else {
-        this.props.history.push('/about')
       }
     }
   }
@@ -40,6 +42,7 @@ class SelfInfo extends Component {
         this.setState({ user: res })
       }
     }
+
   }
 
   componentWillReceiveProps (nextProps) {
@@ -53,7 +56,7 @@ class SelfInfo extends Component {
     var { score, recent_replies, recent_topics, create_at } = this.state.user
     return (
       <div className='selfInfo-container' >
-        <PublicHeader history={this.props.history} logout title='个人信息' />
+        <PublicHeader logout title='个人信息' />
         <section className='self-container' >
           <div className='user-info' >
             {loginname ?

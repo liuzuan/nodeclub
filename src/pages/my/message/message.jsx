@@ -3,10 +3,10 @@ import PublicHeader from '../../../common/header/header';
 import PublicFooter from '../../../common/footer/footer';
 import { NullData } from '../../../common/index';
 import './message.less';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMsg } from '../../../config/utils/getData';
-import { formatDate } from '../../../config/utils/filter';
+import { formatDate } from '../../../config/utils/tool';
 
 /**
  * 模块入口
@@ -38,8 +38,6 @@ class Message extends Component {
     }
     if (this.props.accessToken) {
       await this.getMessage()
-    } else {
-      this.props.history.replace('/signin')
     }
   }
 
@@ -50,6 +48,9 @@ class Message extends Component {
   }
 
   render () {
+    if (!this.props.accessToken) {
+      return <Redirect to={{ pathname: '/signin', state: { from: this.props.location }}} />
+    }
     return (
       <div className='message' >
         <PublicHeader avatar title='个人消息'></PublicHeader>

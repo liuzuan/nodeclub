@@ -7,12 +7,12 @@ import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
 import registerServiceWorker from './registerServiceWorker';
 import { saveUserInfo } from './store/action.js'
-import { getItem } from './config/utils/localStorage';
+import { getItem } from './config/utils/tool';
 
 // 监听state变化
-store.subscribe(() => {
-  console.log('store发生了变化', store.getState());
-});
+// store.subscribe(() => {
+//   console.log('store发生了变化', store.getState());
+// });
 
 if (localStorage.userInfo) {
   store.dispatch(saveUserInfo(getItem('userInfo')))

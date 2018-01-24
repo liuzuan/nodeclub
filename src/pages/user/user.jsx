@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import './user.less';
 import { user } from "../../config/utils/getData";
-import { formatDate } from "../../config/utils/filter";
+import { formatDate } from "../../config/utils/tool";
 import PublicHeader from '../../common/header/header';
 import { Link } from "react-router-dom";
 import { Anchor } from 'antd';
@@ -15,14 +15,18 @@ class User extends Component {
     this.state = {
       data: '',//用户所有数据
       showingTopic: [],//展示中的话题or回复
-      currentNavTab: this.props.location.state ? this.props.location.state.type : 'recent_topics',
+      // currentNavTab: this.props.location.state ? this.props.location.state.type : 'recent_topics',
+      currentNavTab: '',
     };
 
     this.getData = async (name) => { // 获取用户信息数据
-      let type = this.props.location.state ? this.props.location.state.type : ''
+      let type = this.props.location.state ? this.props.location.state.type : 'recent_topics'
       let res = await user(name)
       if (res) {
-        this.setState({ data: res, showingTopic: res[type ? type : 'recent_topics'] })
+        this.setState({
+          data: res, showingTopic: res[type ? type : 'recent_topics'],
+          currentNavTab: type
+        })
       }
     };
 
@@ -38,23 +42,8 @@ class User extends Component {
 
   async componentWillMount () {
     console.log(this.props)
-    let loginname = this.props.match.params.id || ''
+    let loginname = this.props.match.params.id
     await this.getData(loginname)
-  }
-
-  async componentWillReceiveProps (nextProps) {
-    if (nextProps.location.pathname !== this.props.location.pathname) {
-      let loginname = nextProps.match.params.id
-      await this.getData(loginname)
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (nextProps.location.pathname !== this.props.location.pathname || nextState !== this.state) {
-      return true
-    } else {
-      return false
-    }
   }
 
   render () {
@@ -62,7 +51,7 @@ class User extends Component {
     let curTab = this.state.currentNavTab
     return (
       <div>
-        <PublicHeader back title='用户信息' history={this.props.history} />
+        <PublicHeader back title='用户信息' />
         {this.state.data &&
           <div className='user-container' >
             <section className='user-info' >
@@ -94,8 +83,8 @@ class User extends Component {
                         <p className='title' >主题：{title}</p>
                       </Link>
                     </li>
-                  }):
-                  <div className='nomsg' ><NullData /></div> 
+                  }) :
+                  <div className='nomsg' ><NullData /></div>
                 }
               </div>
             </section>
