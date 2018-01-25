@@ -47,7 +47,6 @@ class SignIn extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
     if (this.props.location.state) {
       this.setState({ from: this.props.location.state.from.pathname})
     }

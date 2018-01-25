@@ -23,21 +23,12 @@ class Create extends Component {
         message.info('内容不能为空')
       } else {
         let res = await createTopic(accesstoken, title, tab, content)
-        console.log(accesstoken, title, tab, content)
         if (res.success) {
           message.info('发表成功')
         } else {
           message.info('发表失败')
         }
       }
-    }
-  }
-
-  componentWillMount () {
-    if (!this.props.accessToken) {
-      // console.log(this)
-      // this.props.history.replace('/signin')
-      // return <Redirect to={{pathname:'/signin'}} />
     }
   }
 
