@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './home.less';
 import PublicHeader from '../../common/header/header';
 import PublicFooter from '../../common/footer/footer';
-import { saveScrollBar, saveHomeState } from '../../store/action.js';
+import { saveHomeScrollBar, saveHomeState } from '../../store/action.js';
 import { formatDate, scrollBar } from '../../config/utils/tool';
 import { DataLoading } from '../../common/index';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -93,7 +93,7 @@ class Home extends Component {
         page: state.page,
         hasMore: state.hasMore,
       })
-      setTimeout(() => { window.scrollTo(left, top) }, 100)
+      setTimeout(() => { window.scrollTo(left, top) }, 20)
     } else { //store无数据则发送请求获取数据
       this.setState({
         topicData: await HomeData(1, this.state.currentTab, 10)
@@ -111,7 +111,7 @@ class Home extends Component {
    * 离开页面获取滚动条并记录到store
   */
   componentWillUnmount () {
-    this.props.saveScrollBar(scrollBar())
+    this.props.saveHomeScrollBar(scrollBar())
     this.props.saveHomeState(this.state)
   }
 
@@ -205,5 +205,5 @@ export default connect(state => ({
   state: state.home.state,
   scrollBar: state.home.scrollBar,
 }), {
-    saveScrollBar, saveHomeState
+    saveHomeScrollBar, saveHomeState
   })(Home);

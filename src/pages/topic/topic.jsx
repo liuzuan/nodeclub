@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import PublicHeader from '../../common/header/header';
-import { formatDate } from '../../config/utils/tool';
+import { saveTopicScrollBar, saveTopicState } from '../../store/action';
+import { formatDate, scrollBar } from '../../config/utils/tool';
 import { ToTop, DataLoading } from '../../common/index';
 import { GetTopic, collect, deCollect, ups, newReply } from '../../config/utils/getData';
 
@@ -30,6 +31,9 @@ class TopicDetail extends Component {
         __html: html
       }
     };
+    this.toSignin = () => {
+      this.props.history.push('/signin')
+    }
     this.handleCollect = async () => { // (取消)收藏主题
       if (this.props.userInfo.accessToken) {
         if (!this.state.data.is_collect) {
@@ -46,14 +50,14 @@ class TopicDetail extends Component {
           }
         }
       } else {
-        this.props.history.push('/signin')
+        this.toSignin()
       }
     };
     this.showReplyBox = (index) => { //显示回复框
       if (this.state.accessToken) {
         this.setState({ current_reply: index })
       } else {
-        this.props.history.push('/signin')
+        this.toSignin()
       }
     };
     this.ups = async (item) => { //评论点赞
@@ -76,11 +80,27 @@ class TopicDetail extends Component {
       })
     }
   }
-
-  async componentWillMount (state) {
-    await this.getData()
+  
+  async componentWillMount () {
+    if (this.props.state && this.props.state.data.id === this.props.match.params.id) {
+      let state = this.props.state
+      let left = this.props.scrollBar.left
+      let top = this.props.scrollBar.top
+      this.setState({
+        data: state.data,
+        current_reply: state.current_reply,
+        accessToken: state.accessToken,
+      })
+      setTimeout(() => {window.scrollTo(left, top)}, 20);
+    } else {
+      await this.getData()
+    }
   }
 
+  componentWillUnmount() {
+    this.props.saveTopicScrollBar(scrollBar())
+    this.props.saveTopicState(this.state)
+  }
 
   render () {
     return (
@@ -92,7 +112,7 @@ class TopicDetail extends Component {
             <Reply state={this.state} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
               createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
             <div className='reply' >
-              <ReplyBox getData={this.getData} replySuccess={this.replySuccess} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+              <ReplyBox getData={this.getData} toSignin={this.toSignin} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
             </div>
           </section> :
           <div className='loading' ><DataLoading /></div>
@@ -213,22 +233,26 @@ class ReplyBox extends Component {
   submit = async () => {
     let data = this.props.data
     let reply_id, content
-    if (this.refs.content.value) {
-      if (data.reply_id) {
-        reply_id = data.reply_id
-        content = this.props.placeholder + ' ' + this.refs.content.value
+    if (data.accessToken) {
+      if (this.refs.content.value) {
+        if (data.reply_id) {
+          reply_id = data.reply_id
+          content = this.props.placeholder + ' ' + this.refs.content.value
+        } else {
+          reply_id = ''
+          content = this.refs.content.value
+        }
+        let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
+        if (res.success) {
+          message.info('回复成功')
+          await this.props.getData()
+          this.props.replySuccess()
+        }
       } else {
-        reply_id = ''
-        content = this.refs.content.value
-      }
-      let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
-      if (res.success) {
-        message.info('回复成功')
-        await this.props.getData()
-        this.props.replySuccess()
+        message.info('内容不能为空')
       }
     } else {
-      message.info('内容不能为空')
+      this.props.toSignin()
     }
   }
 
@@ -242,4 +266,10 @@ class ReplyBox extends Component {
   }
 }
 
-export default connect(state => ({ userInfo: state.userInfo }))(TopicDetail);
+export default connect(state => ({ 
+  userInfo: state.userInfo ,
+  state: state.topic.state,
+  scrollBar: state.topic.scrollBar,
+}), {
+    saveTopicScrollBar, saveTopicState
+})(TopicDetail);

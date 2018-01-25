@@ -29,15 +29,17 @@ export const clearUserInfo = () => {
 
 
 /**
- * 记录滚动条位置
+ * 记录首页滚动条位置
  * 
  */
-export const saveScrollBar = (payload) => {
+export const saveHomeScrollBar = (payload) => {
   return {
-    type: type.SAVESCROLLBAR,
+    type: type.SAVEHOMESCROLLBAR,
     payload,
   }
 }
+
+
 
 /**
  * 保存首页数据
@@ -48,6 +50,28 @@ export const saveHomeState = (payload) => {
     payload,
   }
 }
+
+/**
+ * 保存主题详情页数据
+ */
+export const saveTopicState = (payload) => {
+  return {
+    type: type.SAVETOPICSTATE,
+    payload,
+  }
+}
+
+/**
+ * 记录主题页滚动条位置
+ * 
+ */
+export const saveTopicScrollBar = (payload) => {
+  return {
+    type: type.SAVETOPICSCROLLBAR,
+    payload,
+  }
+}
+
 
 
 

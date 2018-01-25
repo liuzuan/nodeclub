@@ -39,12 +39,36 @@ export const userInfo = (state = defaultState, action = {}) => {
  */
 export const home = (state = defaultState, action = {}) => {
   switch (action.type) {
-    case type.SAVESCROLLBAR://记录首页滚动条位置
+    case type.SAVEHOMESCROLLBAR://记录首页滚动条位置
       return {
         ...state,
         ...{scrollBar: action.payload},
       }
     case type.SAVEHOMESTATE://记录首页数据
+      return {
+        ...state,
+        ...{state: action.payload}
+      }
+    default:
+      return state;
+  }
+}
+
+/**
+ * 主题页数据
+ * topic: {
+      state: {},
+      scrollBar: {},
+    }
+ */
+export const topic = (state = defaultState, action = {}) => {
+  switch (action.type) {
+    case type.SAVETOPICSCROLLBAR://记录主题页滚动条位置
+      return {
+        ...state,
+        ...{scrollBar: action.payload},
+      }
+    case type.SAVETOPICSTATE://记录主题页数据
       return {
         ...state,
         ...{state: action.payload}
