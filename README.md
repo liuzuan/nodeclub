@@ -29,5 +29,5 @@ npm start
 - [x] 页面跳转实现登录拦截
 - [x] 页面跳转，不再执行此页面的ajax请求回调方法
 
-<!-- ### [扫一扫二维码查看效果](https://liuzuan.github.io/cnodejs-dist/)
- [![扫一扫二维码查看效果](https://github.com/liuzuan/vue-cnode-mobile/blob/master/src/assets/images/EWM-cnodejs.png)](https://liuzuan.github.io/cnodejs-dist/) -->
+### [扫一扫二维码查看效果](https://liuzuan.github.io/react-cnode-build/)
+ [![扫一扫二维码查看效果](https://github.com/liuzuan/react-cnode/blob/master/src/assets/react-cnode.png)](https://liuzuan.github.io/react-cnode-build/)
