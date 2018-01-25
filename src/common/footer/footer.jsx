@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import './footer.less'
 
-export default class PublicFooter extends Component {
+class PublicFooter extends Component {
 
   state = {
     list: [
@@ -18,7 +18,7 @@ export default class PublicFooter extends Component {
       <footer className='footer_container'>
         {
           this.state.list.map((item, index) => {
-            return <Link to={`${item.route}`} className={this.props.path === item.route? 'active':''} key={index}>
+            return <Link to={`${item.route}`} className={this.props.match.path === item.route? 'active':''} key={index}>
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref={item.icon}></use>
               </svg>
@@ -30,3 +30,5 @@ export default class PublicFooter extends Component {
     )
   }
 }
+
+export default withRouter(PublicFooter)

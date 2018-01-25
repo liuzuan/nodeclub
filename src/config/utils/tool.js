@@ -1,3 +1,6 @@
+/** 
+ * 时间格式化
+*/
 export const formatDate = (value) => {
   if (!value) return ''
   var date = new Date(value)
@@ -21,7 +24,9 @@ export const formatDate = (value) => {
   }
 }
 
-
+/** 
+ * 操作localStorage
+*/
 export const setItem = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 export const getItem = (key) => {
   if (localStorage.key) {
@@ -30,8 +35,10 @@ export const getItem = (key) => {
 };
 export const removeItem = (key) => localStorage.removeItem(key)
 
-
-export const scollBar = () => {
+/** 
+ * 记录滚动条
+*/
+export const scrollBar = () => {
   let t, l;
   if (document.documentElement && document.documentElement.scrollTop) {
     t = document.documentElement.scrollTop;

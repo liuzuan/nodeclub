@@ -26,6 +26,8 @@ export const clearUserInfo = () => {
   }
 }
 
+
+
 /**
  * 记录滚动条位置
  * 
@@ -40,22 +42,14 @@ export const saveScrollBar = (payload) => {
 /**
  * 保存首页数据
  */
-export const saveHomeData = (payload) => {
+export const saveHomeState = (payload) => {
   return {
-    type: type.SAVEHOMEDATA,
+    type: type.SAVEHOMESTATE,
     payload,
   }
 }
 
-/**
- * 保存首页数据
- */
-export const saveHomeTab = (payload) => {
-  return {
-    type: type.SAVEHOMETAB,
-    payload,
-  }
-}
+
 
 
 

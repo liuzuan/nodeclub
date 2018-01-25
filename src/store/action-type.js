@@ -8,7 +8,5 @@ export const CLEARUSERINFO = 'CLEARUSERINFO';
 export const SAVESCROLLBAR = 'SAVESCROLLBAR';
 
 //保存首页数据
-export const SAVEHOMEDATA = 'SAVEHOMEDATA';
+export const SAVEHOMESTATE = 'SAVEHOMESTATE';
 
-//保存首页TAB
-export const SAVEHOMETAB = 'SAVEHOMETAB'

@@ -1,7 +1,10 @@
 @import (reference) '../../style/mixin.less';
+@color: rgb(133, 131, 131);
+
 .home_container {
-  margin-top: 50px;
+  margin-top: 100px;
   .home_nav {
+    .positionTop(49px);
     .flex;
     .wh(100%, 40px);
     line-height: 40px;
@@ -9,7 +12,6 @@
     .shadowBottom;
     z-index: 999;
     background: #fff;
-    .positionTop(49px);
     .navList {
       color: black;
       padding: 0 8px;
@@ -22,18 +24,21 @@
   }
 }
 
-@color: rgb(133, 131, 131);
 .topic_lists {
-  margin-top: 90px;
+  margin-bottom: 60px;
+  .hasMore {
+    text-align: center;
+  }
   .loading {
     margin-top: 20px;
   }
   .topic_cell {
-    .shadowBottom;
-    margin-bottom: 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 3px 3px #eee;
+    margin: 15px 10px;
     .author {
       padding: 10px;
-      height: 40px;
+      overflow: hidden;
       .topic_cell_avatar {
         float: left;
         .wh(40px, 40px);
@@ -68,7 +73,7 @@
     }
     .topic_title {
       margin: 0 25px;
-      padding: 10px 0;
+      padding-bottom: 10px;
       .font(16px, left, 400, black);
       .borderBottom;
       .text-overflow;

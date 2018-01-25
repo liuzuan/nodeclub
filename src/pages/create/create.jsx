@@ -50,7 +50,7 @@ class Create extends Component {
         <PublicHeader avatar sent title='发&nbsp;表' submit={this.submit} />
         <section className='create-container' >
           <input ref='title' className='title' type="text" placeholder='标题:(10字以上)' />
-          <select ref='tab' className='tab'>
+          <select ref='tab' className='tab' >
             <option value="">请选择一种类型</option>
             <option value="share">分享</option>
             <option value="ask">问答</option>
@@ -59,7 +59,7 @@ class Create extends Component {
           </select>
           <textarea ref='content' className='content' placeholder='markdown文本，请注意格式标记' ></textarea>
         </section>
-        <PublicFooter path={this.props.match.path} />
+        <PublicFooter />
       </div>
     )
   }

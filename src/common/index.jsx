@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BackTop } from 'antd';
-import './index.less';
 import { Spin } from 'antd';
+import './index.less';
 
 export class NullData extends Component {
   render () {

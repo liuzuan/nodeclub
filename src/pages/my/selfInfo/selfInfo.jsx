@@ -91,7 +91,7 @@ class SelfInfo extends Component {
             </li>
           })}
         </section>
-        <PublicFooter path={this.props.match.path} />
+        <PublicFooter />
       </div>
     )
   }

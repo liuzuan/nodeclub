@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import './header.less';
+import { Link, withRouter } from 'react-router-dom';
 import { clearUserInfo } from '../../store/action';
 import { removeItem } from '../../config/utils/tool';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
+import './header.less';
 
 
 
 
 class PublicHeader extends Component {
-  static propType = {
-    accessToken: PropTypes.string
-  }
 
   goBack () {
     this.props.history.goBack()
@@ -30,21 +26,23 @@ class PublicHeader extends Component {
   }
 
   render () {
-
     return (
       <header className='header_container'>
         <span className='left' >
-          {this.props.back &&
+          {
+            this.props.back &&
             <svg onClick={this.goBack.bind(this)} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-back'></use>
             </svg>
           }
-          {this.props.avatar && this.props.userInfo.avatar_url &&
+          {
+            this.props.avatar && this.props.userInfo.avatar_url &&
             <Link to='/my/selfInfo'>
               <img src={this.props.userInfo.avatar_url} alt="" />
             </Link>
           }
-          {!this.props.userInfo.avatar_url && this.props.avatar &&
+          {
+            !this.props.userInfo.avatar_url && this.props.avatar &&
             <Link to='/signIn' >
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref='#icon-my'></use>
@@ -53,7 +51,8 @@ class PublicHeader extends Component {
         </span>
         <span>{this.props.title}</span>
         <span className='right'>
-          {this.props.sent &&
+          {
+            this.props.sent &&
             <svg onClick={this.props.submit} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-fasong'></use>
             </svg>

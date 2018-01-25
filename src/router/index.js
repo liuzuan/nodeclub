@@ -16,9 +16,9 @@ export default class RouteConfig extends Component {
       <Router>
         <Switch>
           <Route path="/" exact component={home} />
-          <Route path='/my/message'  component={message} />
           <Route path='/topic/create' exact component={create} />
-          <Route path='/my/selfInfo'  exact component={selfInfo} />
+          <Route path='/my/selfInfo' component={selfInfo} />
+          <Route path='/my/message' component={message} />
           <Route path="/topic/:id" component={topic} />
           <Route path='/user/:id' component={user} />
           <Route path='/signIn' component={signIn} />

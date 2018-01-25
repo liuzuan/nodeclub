@@ -41,7 +41,6 @@ class User extends Component {
   }
 
   async componentWillMount () {
-    console.log(this.props)
     let loginname = this.props.match.params.id
     await this.getData(loginname)
   }

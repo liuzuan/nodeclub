@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import './home.less';
 import PublicHeader from '../../common/header/header';
 import PublicFooter from '../../common/footer/footer';
-import { formatDate, scollBar } from '../../config/utils/tool';
-import { saveScrollBar, saveHomeData, saveHomeTab } from '../../store/action.js';
+import { saveScrollBar, saveHomeState } from '../../store/action.js';
+import { formatDate, scrollBar } from '../../config/utils/tool';
 import { DataLoading } from '../../common/index';
+import InfiniteScroll from 'react-infinite-scroller';
 import { HomeData } from '../../config/utils/getData';
 import { connect } from 'react-redux';
 import { ToTop } from '../../common/index';
@@ -26,9 +27,21 @@ class Home extends Component {
         { title: '招聘', tab: 'job' },
         { title: '测试', tab: 'dev' },
       ],
-      currentTab: 'all',
-      topicData: [],
+      currentTab: 'all', //当前分类
+      topicData: [], // 列表数据
+      page: 1, // 当前已加载页数
+      hasMore: true// 有无更多数据
     };
+
+    /** 
+     * 下拉加载
+    */
+    this.scrollGetData = async () => {
+      let newPage = this.state.page + 1
+      let res = await HomeData(newPage, this.state.currentTab, 10)
+      let newTopicData = [...this.state.topicData, ...res]
+      this.setState({ page: newPage, topicData: newTopicData, hasMore: !res.length < 10 })
+    }
 
     /** 
      * tab分类选择
@@ -36,7 +49,7 @@ class Home extends Component {
     this.tabSelect = (tab) => {
       this.setState({
         currentTab: tab,
-        topicData: HomeData(1, tab, 20)
+        topicData: HomeData(1, tab, 10)
       })
     };
 
@@ -65,25 +78,25 @@ class Home extends Component {
     }
     this.setState({
       currentTab: tab,
-      topicData: await HomeData(1, tab, 20)
+      topicData: await HomeData(1, tab, 10)
     })
   }
-  /** 
-   * 挂载前获取首页数据
-  */
+
   async componentWillMount () {
-    if (this.props.homeData.tab) {
-      let homeData = this.props.homeData
-      let left = homeData.scrollBar.left
-      let top = homeData.scrollBar.top
+    if (this.props.state) {//store有数据则渲染
+      let state = this.props.state
+      let left = this.props.scrollBar.left
+      let top = this.props.scrollBar.top
       this.setState({
-        topicData: homeData.data,
-        currentTab: homeData.tab
+        currentTab: state.currentTab,
+        topicData: state.topicData,
+        page: state.page,
+        hasMore: state.hasMore,
       })
       setTimeout(() => { window.scrollTo(left, top) }, 100)
-    } else {
+    } else { //store无数据则发送请求获取数据
       this.setState({
-        topicData: await HomeData(1, this.state.currentTab, 20)
+        topicData: await HomeData(1, this.state.currentTab, 10)
       })
     }
     if (Boolean(this.props.location.state)) {
@@ -93,14 +106,13 @@ class Home extends Component {
     }
 
   }
+
   /** 
-   * 获取滚动条并记录到store
+   * 离开页面获取滚动条并记录到store
   */
   componentWillUnmount () {
-    let scrollBar = scollBar()
-    this.props.saveScrollBar(scrollBar)
-    this.props.saveHomeData(this.state.topicData)
-    this.props.saveHomeTab(this.state.currentTab)
+    this.props.saveScrollBar(scrollBar())
+    this.props.saveHomeState(this.state)
   }
 
   render () {
@@ -120,10 +132,11 @@ class Home extends Component {
             }
           </nav>
           <TopicList
+            state={this.state}
             currentTab={this.state.currentTab} formatTab={this.formatTab}
-            data={this.state.topicData} tabs={this.state.navItems} />:
+            scrollGetData={this.scrollGetData} />
         </section>
-        <PublicFooter path={this.props.match.path} />
+        <PublicFooter />
         <ToTop />
       </div>
     );
@@ -132,18 +145,20 @@ class Home extends Component {
 
 /**
  * 
- * 
  * 首页列表
- * 
  */
 class TopicList extends Component {
-  state = {}
   render () {
+    let { hasMore, topicData } = this.props.state
     return (
-      <div>
+      <InfiniteScroll
+        loadMore={this.props.scrollGetData}
+        hasMore={hasMore}
+        initialLoad={false}
+        threshold={100}>
         <section className='topic_lists'>
-          {this.props.data.length ?
-            this.props.data.map((item, index) => {
+          {Boolean(topicData.length) &&
+            topicData.map((item, index) => {
               return <li className='topic_cell' key={item.id}>
                 <Link to={`/topic/${item.id}`}>
                   <section className='author'>
@@ -177,17 +192,18 @@ class TopicList extends Component {
                   </section>
                 </Link>
               </li>
-            }) :
-            <div className='loading' ><DataLoading /></div>
+            })
           }
+          <div className='hasMore' >{hasMore ? <DataLoading /> : '已无更多...'}</div>
         </section>
-      </div>
+      </InfiniteScroll>
     )
   }
 }
 
 export default connect(state => ({
-  homeData: state.home
+  state: state.home.state,
+  scrollBar: state.home.scrollBar,
 }), {
-    saveScrollBar, saveHomeData, saveHomeTab
+    saveScrollBar, saveHomeState
   })(Home);

@@ -94,7 +94,7 @@ class Message extends Component {
               </div>
           }
         </section>
-        <PublicFooter path={this.props.match.path} />
+        <PublicFooter />
       </div>
     )
   }
