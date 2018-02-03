@@ -3,32 +3,49 @@ import PublicHeader from '../../common/header/header';
 import PublicFooter from '../../common/footer/footer';
 import { createTopic } from '../../config/utils/getData';
 import './create.less';
+import { Alert } from '../../common/index';
 import { connect } from 'react-redux';
-import { message } from 'antd';
 import { Redirect } from 'react-router-dom';
 
 class Create extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      alertStatus: false, //弹框状态
+      alertTip: '', //弹框提示文字
+    };
+    // 关闭弹款
+    this.closeAlert = () => {
+      this.setState({
+        alertStatus: false,
+        alertTip: '',
+      })
+    };
+    // 提交发表
     this.submit = async () => {
       let accesstoken = this.props.accessToken
       let title = this.refs.title.value
       let tab = this.refs.tab.value
       let content = this.refs.content.value
+      let alertTip
       if (title.length < 10) {
-        message.info('标题字数不足')
+        alertTip = '标题字数不足'
       } else if (!tab) {
-        message.info('请选择一种类型')
+        alertTip = '请选择一种类型'
       } else if (!content) {
-        message.info('内容不能为空')
+        alertTip = '内容不能为空'
       } else {
         let res = await createTopic(accesstoken, title, tab, content)
         if (res.success) {
-          message.info('发表成功')
+          alertTip = '发表成功'
         } else {
-          message.info('发表失败')
+          alertTip = '发表失败'
         }
       }
+      this.setState({
+        alertStatus: true,
+        alertTip: alertTip,
+      })
     }
   }
 
@@ -39,7 +56,7 @@ class Create extends Component {
     return (
       <div>
         <PublicHeader avatar sent title='发&nbsp;表' submit={this.submit} />
-        <section className='create-container' >
+        <main className='create-container' >
           <input ref='title' className='title' type="text" placeholder='标题:(10字以上)' />
           <select ref='tab' className='tab' >
             <option value="">请选择一种类型</option>
@@ -49,7 +66,8 @@ class Create extends Component {
             <option value="dev">测试</option>
           </select>
           <textarea ref='content' className='content' placeholder='markdown文本，请注意格式标记' ></textarea>
-        </section>
+          <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
+        </main>
         <PublicFooter />
       </div>
     )

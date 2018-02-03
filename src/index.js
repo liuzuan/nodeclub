@@ -5,14 +5,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
+// import { AppContainer } from 'react-hot-loader'
 import registerServiceWorker from './registerServiceWorker';
 import { saveUserInfo } from './store/action.js'
 import { getItem } from './config/utils/tool';
 
 // 监听state变化
-store.subscribe(() => {
-  console.log('store发生了变化', store.getState());
-});
+// store.subscribe(() => {
+//   console.log('store发生了变化', store.getState());
+// });
 
 if (localStorage.userInfo) {
   store.dispatch(saveUserInfo(getItem('userInfo')))
@@ -21,7 +22,9 @@ if (localStorage.userInfo) {
 const render = Component => {
   ReactDOM.render(
     <Provider store={store}>
-      <Component />
+      {/* <AppContainer> */}
+        <Component />
+      {/* </AppContainer> */}
     </Provider>,
     document.getElementById('root')
   )

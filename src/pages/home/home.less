@@ -1,25 +1,35 @@
 @import (reference) '../../style/mixin.less';
 @color: rgb(133, 131, 131);
-
 .home_container {
   margin-top: 100px;
   .home_nav {
     .positionTop(49px);
-    .flex;
-    .wh(100%, 40px);
-    line-height: 40px;
-    .font(15px, center, 400, rgba(21, 20, 20, 0.726));
     .shadowBottom;
+    .wh(100%, 43px);
     z-index: 999;
     background: #fff;
     .navList {
-      color: black;
-      padding: 0 8px;
+      .flex;
+      .wh(100%, 40px);
+      line-height: 40px;
+      .font(15px, center, 400, rgba(21, 20, 20, 0.726));
+      .navItem {
+        color: black;
+        padding: 0 8px;
+      }
+      .activeTab {
+        .navItem;
+        color: @style-color;
+      }
     }
-    .activeTab {
-      .navList;
-      color: @style-color;
-      border-bottom: 3px solid @style-color;
+    .nav-bottom {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 16.7%;
+      height: 3px;
+      background: @style-color;
+      transition: left 200ms;
     }
   }
 }
@@ -37,7 +47,7 @@
     box-shadow: 0 2px 3px 3px #eee;
     margin: 15px 10px;
     .author {
-      padding: 10px;
+      padding: 10px 3px 10px 10px;
       overflow: hidden;
       .topic_cell_avatar {
         float: left;
@@ -57,8 +67,9 @@
         float: right;
         font-size: 13px;
         color: @color;
-        padding: 2px 4px;
+        padding: 2px 6px;
         border: 1px solid @color;
+        transform: rotate(45deg)
       }
       .isTop {
         .topic_type;

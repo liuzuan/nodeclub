@@ -64,7 +64,7 @@ class PublicHeader extends Component {
             </svg>
           }
         </span>
-      </header >
+      </header>
     )
   }
 }

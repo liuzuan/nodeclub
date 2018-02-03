@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './topic.less';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { message } from 'antd';
+// import { message } from 'antd';
+import { Alert } from '../../common/index';
 import PublicHeader from '../../common/header/header';
 import { saveTopicScrollBar, saveTopicState } from '../../store/action';
 import { formatDate, scrollBar } from '../../config/utils/tool';
@@ -19,6 +20,8 @@ class TopicDetail extends Component {
       data: '',//主题详情数据
       accessToken: this.props.userInfo.accessToken || '',
       current_reply: '',
+      alertStatus: false, //弹框状态
+      alertTip: '', //弹框提示文字
     };
     this.getData = async () => { //获取主题详情数据
       let Data = await GetTopic(this.props.match.params.id, this.state.accessToken)
@@ -26,15 +29,25 @@ class TopicDetail extends Component {
         data: Data,//所有数据
       })
     };
-    this.createMarkup = (html) => { // markdown文本渲染
+    // 关闭弹款
+    this.closeAlert = () => {
+      this.setState({
+        alertStatus: false,
+        alertTip: '',
+      })
+    };
+    // markdown文本渲染
+    this.createMarkup = (html) => {
       return {
         __html: html
       }
     };
+    // 前往登录页
     this.toSignin = () => {
       this.props.history.push('/signin')
-    }
-    this.handleCollect = async () => { // (取消)收藏主题
+    };
+    // (取消)收藏主题
+    this.handleCollect = async () => {
       if (this.props.userInfo.accessToken) {
         if (!this.state.data.is_collect) {
           let res = await collect(this.state.accessToken, this.state.data.id)
@@ -53,14 +66,16 @@ class TopicDetail extends Component {
         this.toSignin()
       }
     };
-    this.showReplyBox = (index) => { //显示回复框
+    //显示回复框
+    this.showReplyBox = (index) => {
       if (this.state.accessToken) {
         this.setState({ current_reply: index })
       } else {
         this.toSignin()
       }
     };
-    this.ups = async (item) => { //评论点赞
+    //评论点赞
+    this.ups = async (item) => {
       if (item.author.loginname !== this.props.userInfo.loginname) {
         if (this.state.accessToken) {
           let res = await ups(item.id, this.state.accessToken)
@@ -71,16 +86,18 @@ class TopicDetail extends Component {
           this.props.history.push('/signin')
         }
       } else {
-        message.info('不可对自己点赞')
+        this.setState({ alertTip: '不可对自己点赞', alertStatus: true })
+
       }
     };
-    this.replySuccess = () => {//提交回复成功后关闭回复框
-      this.setState({
-        current_reply: ''
-      })
+    //提交回复成功后关闭回复框
+    this.replySuccess = () => {
+      if (this.state.current_reply) {
+        this.setState({ current_reply: '' })
+      }
     }
   }
-  
+
   async componentWillMount () {
     if (this.props.state && this.props.state.data.id === this.props.match.params.id) {
       let state = this.props.state
@@ -91,13 +108,13 @@ class TopicDetail extends Component {
         current_reply: state.current_reply,
         accessToken: state.accessToken,
       })
-      setTimeout(() => {window.scrollTo(left, top)}, 20);
+      setTimeout(() => { window.scrollTo(left, top) }, 20);
     } else {
       await this.getData()
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.props.saveTopicScrollBar(scrollBar())
     this.props.saveTopicState(this.state)
   }
@@ -112,11 +129,12 @@ class TopicDetail extends Component {
             <Reply state={this.state} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
               createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
             <div className='reply' >
-              <ReplyBox getData={this.getData} toSignin={this.toSignin} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+              <ReplyBox getData={this.getData} replySuccess={this.replySuccess} toSignin={this.toSignin} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
             </div>
           </section> :
           <div className='loading' ><DataLoading /></div>
         }
+        <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
         <ToTop />
       </div >
     );
@@ -124,7 +142,7 @@ class TopicDetail extends Component {
 }
 
 /**
- * 主题文章部分
+ * 文章展示部分
  */
 class Article extends Component {
   constructor(props) {
@@ -161,10 +179,9 @@ class Article extends Component {
 }
 
 /**
- * 主题回复部分
+ * 回复展示部分
  */
 class Reply extends Component {
-
   render () {
     let { replies } = this.props.state.data
     return (
@@ -226,14 +243,25 @@ class Reply extends Component {
  * 回复框
  */
 class ReplyBox extends Component {
+  state = {
+    alertStatus: false,
+    alertTip: '',
+  }
 
-  /**
-   * 提交回复
-   */
+  // 关闭弹窗
+  closeAlert = () => {
+    this.setState({
+      alertStatus: false,
+      alertTip: '',
+    })
+  };
+
+  // 提交回复
   submit = async () => {
     let data = this.props.data
     let reply_id, content
     if (data.accessToken) {
+      let alertTip
       if (this.refs.content.value) {
         if (data.reply_id) {
           reply_id = data.reply_id
@@ -244,13 +272,19 @@ class ReplyBox extends Component {
         }
         let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
         if (res.success) {
-          message.info('回复成功')
+          alertTip = '回复成功'
           await this.props.getData()
-          this.props.replySuccess()
+          setTimeout(() => {
+            this.props.replySuccess()
+          }, 1500); 
         }
       } else {
-        message.info('内容不能为空')
+        alertTip = '内容不能为空'
       }
+      this.setState({
+        alertStatus: true,
+        alertTip: alertTip,
+      })
     } else {
       this.props.toSignin()
     }
@@ -261,15 +295,16 @@ class ReplyBox extends Component {
       <div className='reply-box' >
         <textarea className='textarea' ref='content' placeholder={this.props.placeholder} ></textarea>
         <input className='btn' onClick={this.submit} type="button" value='回 复' />
+        <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
       </div>
     )
   }
 }
 
-export default connect(state => ({ 
-  userInfo: state.userInfo ,
+export default connect(state => ({
+  userInfo: state.userInfo,
   state: state.topic.state,
   scrollBar: state.topic.scrollBar,
 }), {
     saveTopicScrollBar, saveTopicState
-})(TopicDetail);
+  })(TopicDetail);

@@ -12,7 +12,6 @@ import { ToTop } from '../../common/index';
 import { Link } from 'react-router-dom';
 
 /**
- * 
  * 首页模块入口
  */
 class Home extends Component {
@@ -30,7 +29,8 @@ class Home extends Component {
       currentTab: 'all', //当前分类
       topicData: [], // 列表数据
       page: 1, // 当前已加载页数
-      hasMore: true// 有无更多数据
+      hasMore: true, // 有无更多数据
+      nav_bottom: '0',
     };
 
     /** 
@@ -43,10 +43,41 @@ class Home extends Component {
       this.setState({ page: newPage, topicData: newTopicData, hasMore: !res.length < 10 })
     }
 
+    /**
+     * 设置导航下底线
+     */
+    this.setNavBottom = (tab) => {
+      let nav_bottom
+      switch (tab) {
+        case 'all':
+          nav_bottom = '0%';
+          break;
+        case 'good':
+          nav_bottom = '16.6%';
+          break;
+        case 'share':
+          nav_bottom = '33.4%';
+          break;
+        case 'ask':
+          nav_bottom = '50%';
+          break;
+        case 'job':
+          nav_bottom = '66.7%';
+          break;
+        case 'dev':
+          nav_bottom = '83.3%';
+          break;
+        default:
+          nav_bottom = '0';
+      }
+      this.setState({ nav_bottom: nav_bottom })
+    }
+
     /** 
-     * tab分类选择
+     * 点击导航选择话题分类
     */
     this.tabSelect = (tab) => {
+      this.setNavBottom(tab)
       this.setState({
         currentTab: tab,
         topicData: HomeData(1, tab, 10)
@@ -54,7 +85,7 @@ class Home extends Component {
     };
 
     /** 
-     * 列表项tab过滤
+     * 列表项tab过滤(good => 精华)
     */
     this.formatTab = (tab) => {
       for (let k of this.state.navItems) {
@@ -63,30 +94,15 @@ class Home extends Component {
         }
       }
     };
-  }
 
-  /**
-   * 
-   * 前进后退获取数据
-   */
-  async componentWillReceiveProps (nextProps) {
-    let tab
-    if (nextProps.location.state) {
-      tab = nextProps.location.state.tab
-    } else {
-      tab = 'all'
-    }
-    this.setState({
-      currentTab: tab,
-      topicData: await HomeData(1, tab, 10)
-    })
   }
 
   async componentWillMount () {
-    if (this.props.state) {//store有数据则渲染
+    if (this.props.state) {// 进入首页，store有数据则渲染
       let state = this.props.state
       let left = this.props.scrollBar.left
       let top = this.props.scrollBar.top
+      this.setNavBottom(state.currentTab)
       this.setState({
         currentTab: state.currentTab,
         topicData: state.topicData,
@@ -99,12 +115,31 @@ class Home extends Component {
         topicData: await HomeData(1, this.state.currentTab, 10)
       })
     }
-    if (Boolean(this.props.location.state)) {
+    if (Boolean(this.props.location.search)) { // 设置导航
+      let tab = this.props.location.search.split('=')[1]
+      this.setNavBottom(tab)
       this.setState({
-        currentTab: this.props.location.state.tab
+        currentTab: tab
       })
     }
+  }
 
+  /**
+   * 
+   * 前进后退获取数据
+   */
+  async componentWillReceiveProps (nextProps) {
+    // console.log(nextProps)
+    let tab
+    if (nextProps.location.search) {
+      tab = nextProps.location.search.slice(nextProps.location.search.indexOf('=') + 1)
+    } else {
+      tab = 'all'
+    }
+    this.setState({
+      currentTab: tab,
+      topicData: await HomeData(1, tab, 10)
+    })
   }
 
   /** 
@@ -119,23 +154,26 @@ class Home extends Component {
     return (
       <div>
         <PublicHeader title='首&nbsp;页' avatar />
-        <section className='home_container'>
+        <main className='home_container'>
           <nav className='home_nav'>
-            {
-              this.state.navItems.map((item, index) => {
-                return <Link to={{ pathname: '/', search: `?tab=${item.tab}`, state: { tab: item.tab } }}
-                  className={item.tab === this.state.currentTab ? 'activeTab' : 'navList'}
-                  onClick={(e) => this.tabSelect(item.tab, e)} key={index}>
-                  {item.title}
-                </Link>
-              })
-            }
+            <section className='navList' >
+              {
+                this.state.navItems.map(item => {
+                  return <Link to={{ pathname: '/', search: `?tab=${item.tab}` }}
+                    className={item.tab === this.state.currentTab ? 'activeTab' : 'navItem'}
+                    onClick={e => this.tabSelect(item.tab, e)} key={item.tab}>
+                    {item.title}
+                  </Link>
+                })
+              }
+            </section>
+            <div className='nav-bottom' style={{ left: this.state.nav_bottom }} ></div>
           </nav>
           <TopicList
             state={this.state}
             currentTab={this.state.currentTab} formatTab={this.formatTab}
             scrollGetData={this.scrollGetData} />
-        </section>
+        </main>
         <PublicFooter />
         <ToTop />
       </div>
@@ -144,7 +182,7 @@ class Home extends Component {
 }
 
 /**
- * 
+ * class TopicList
  * 首页列表
  */
 class TopicList extends Component {
@@ -167,9 +205,12 @@ class TopicList extends Component {
                       <p className='author_name'>{item.author.loginname}</p>
                       <p className='time'>{formatDate(item.create_at)}</p>
                     </div>
-                    <div className={item.top ? 'isTop' : item.good ? 'isGood' : 'topic_type'}>
-                      {item.top ? '置顶' : item.good ? '精华' : this.props.formatTab(item.tab)}
-                    </div>
+                    {
+                      item.tab &&
+                      <div className={item.top ? 'isTop' : item.good ? 'isGood' : 'topic_type'}>
+                        {item.top ? '置顶' : item.good ? '精华' : this.props.formatTab(item.tab)}
+                      </div>
+                    }
                   </section>
                   <p className='topic_title'>{item.title}</p>
                   <section className='topic_amount'>

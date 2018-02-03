@@ -67,8 +67,7 @@ class SelfInfo extends Component {
                   <p className='score' >积分：{score}</p>
                   <p className='create-at' >注册于：{formatDate(create_at)}</p>
                 </div>
-              </section>
-              :
+              </section> :
               <Link className='logout' to='/signIn'>
                 <svg className="icon" aria-hidden="true">
                   <use xlinkHref='#icon-my'></use>
