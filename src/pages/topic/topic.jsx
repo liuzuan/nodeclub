@@ -90,7 +90,7 @@ class TopicDetail extends Component {
     };
     // 回复成功后执行回调
     this.replySuccess = () => {
-      window.scrollTo(0,document.documentElement.scrollHeight)
+      window.scrollTo(0, document.documentElement.scrollHeight)
       if (this.state.current_reply) {
         this.replyCancle()
       }
@@ -98,7 +98,11 @@ class TopicDetail extends Component {
     };
     // 底部回复区获得焦点后消失，显示回复框 
     this.bottomFocus = () => {
-      this.setState({ bottomReply: false })
+      if (this.state.accessToken) {
+        this.setState({ bottomReply: false })
+      } else {
+        this.toSignin()
+      }
     };
 
     this.cancle = () => {
@@ -147,8 +151,8 @@ class TopicDetail extends Component {
             >
               {
                 this.state.bottomReply &&
-                <div className='bottom-input' >
-                  <input type="text" onFocus={this.bottomFocus} placeholder='我想说点什么' />
+                <div className='bottom-input' onClick={this.bottomFocus}>
+                  <input type="text" disabled='true' placeholder='我想说点什么...' />
                 </div>
               }
             </ReactCSSTransitionGroup>
@@ -303,34 +307,30 @@ class ReplyBox extends Component {
   submit = async () => {
     let data = this.props.data
     let reply_id, content
-    if (data.accessToken) {
-      let alertTip
-      if (this.refs.content.value) {
-        if (data.reply_id) {
-          reply_id = data.reply_id
-          content = this.props.placeholder + ' ' + this.refs.content.value
-        } else {
-          reply_id = ''
-          content = this.refs.content.value
-        }
-        let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
-        if (res.success) {
-          alertTip = '回复成功'
-          await this.props.getData()
-          setTimeout(() => {
-            this.props.replySuccess()
-          }, 1500);
-        }
+    let alertTip
+    if (this.refs.content.value) {
+      if (data.reply_id) {
+        reply_id = data.reply_id
+        content = this.props.placeholder + ' ' + this.refs.content.value
       } else {
-        alertTip = '内容不能为空'
+        reply_id = ''
+        content = this.refs.content.value
       }
-      this.setState({
-        alertStatus: true,
-        alertTip: alertTip,
-      })
+      let res = await newReply(data.topic_id, data.accessToken, reply_id, content)
+      if (res.success) {
+        alertTip = '回复成功'
+        await this.props.getData()
+        setTimeout(() => {
+          this.props.replySuccess()
+        }, 1500);
+      }
     } else {
-      this.props.toSignin()
+      alertTip = '内容不能为空'
     }
+    this.setState({
+      alertStatus: true,
+      alertTip: alertTip,
+    })
   }
 
   render () {
