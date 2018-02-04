@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PublicHeader from '../../common/header/header';
+import {PublicHeader} from '../../common/index';
 import './signIn.less'
 import { Login } from '../../config/utils/getData';
 import { saveUserInfo } from '../../store/action';

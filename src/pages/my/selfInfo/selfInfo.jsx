@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../../common/header/header';
-import PublicFooter from '../../../common/footer/footer';
+import { PublicHeader, PublicFooter }from '../../../common/index';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './selfInfo.less';

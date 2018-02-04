@@ -1,13 +1,10 @@
-
-
 import React, { Component } from 'react';
 import './user.less';
 import { user } from "../../config/utils/getData";
 import { formatDate } from "../../config/utils/tool";
-import PublicHeader from '../../common/header/header';
 import { Link } from "react-router-dom";
 import { Anchor } from 'antd';
-import { NullData } from '../../common/index';
+import { NullData, PublicHeader } from '../../common/index';
 
 class User extends Component {
   constructor(props) {
@@ -15,7 +12,6 @@ class User extends Component {
     this.state = {
       data: '',//用户所有数据
       showingTopic: [],//展示中的话题or回复
-      // currentNavTab: this.props.location.state ? this.props.location.state.type : 'recent_topics',
       currentNavTab: '',
     };
 
@@ -52,7 +48,7 @@ class User extends Component {
       <div>
         <PublicHeader back title='用户信息' />
         {this.state.data &&
-          <div className='user-container' >
+          <main className='user-container' >
             <section className='user-info' >
               <img src={avatar_url} alt="" />
               <div>
@@ -71,7 +67,7 @@ class User extends Component {
               <div className='topic-list' >
                 {this.state.showingTopic.length ?
                   this.state.showingTopic.map((item, index) => {
-                    var { author, id, last_reply_at, title } = item
+                    let { author, id, last_reply_at, title } = item
                     return <li className='topic-list-cell' key={id} >
                       <Link to={`/topic/${id}`} >
                         <header>
@@ -87,7 +83,7 @@ class User extends Component {
                 }
               </div>
             </section>
-          </div>
+          </main>
         }
       </div>
     )

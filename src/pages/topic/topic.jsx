@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import './topic.less';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-// import { message } from 'antd';
-import { Alert } from '../../common/index';
-import PublicHeader from '../../common/header/header';
 import { saveTopicScrollBar, saveTopicState } from '../../store/action';
 import { formatDate, scrollBar } from '../../config/utils/tool';
-import { ToTop, DataLoading } from '../../common/index';
+import { ToTop, DataLoading, PublicHeader, Alert } from '../../common/index';
 import { GetTopic, collect, deCollect, ups, newReply } from '../../config/utils/getData';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 /**
  * 模块入口
@@ -22,6 +20,7 @@ class TopicDetail extends Component {
       current_reply: '',
       alertStatus: false, //弹框状态
       alertTip: '', //弹框提示文字
+      bottomReply: true,
     };
     this.getData = async () => { //获取主题详情数据
       let Data = await GetTopic(this.props.match.params.id, this.state.accessToken)
@@ -87,14 +86,27 @@ class TopicDetail extends Component {
         }
       } else {
         this.setState({ alertTip: '不可对自己点赞', alertStatus: true })
-
       }
     };
-    //提交回复成功后关闭回复框
+    // 回复成功后执行回调
     this.replySuccess = () => {
+      window.scrollTo(0,document.documentElement.scrollHeight)
       if (this.state.current_reply) {
-        this.setState({ current_reply: '' })
+        this.replyCancle()
       }
+      this.cancle()
+    };
+    // 底部回复区获得焦点后消失，显示回复框 
+    this.bottomFocus = () => {
+      this.setState({ bottomReply: false })
+    };
+
+    this.cancle = () => {
+      this.setState({ bottomReply: true })
+    };
+
+    this.replyCancle = () => {
+      this.setState({ current_reply: '' })
     }
   }
 
@@ -126,11 +138,33 @@ class TopicDetail extends Component {
         {this.state.data ?
           <section>
             <Article data={this.state.data} handleCollect={this.handleCollect} createMarkup={this.createMarkup} />
-            <Reply state={this.state} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
+            <Reply state={this.state} cancle={this.replyCancle} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
               createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
-            <div className='reply' >
-              <ReplyBox getData={this.getData} replySuccess={this.replySuccess} toSignin={this.toSignin} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
-            </div>
+            <ReactCSSTransitionGroup
+              transitionName="rise"
+              transitionEnterTimeout={300}
+              transitionLeaveTimeout={300}
+            >
+              {
+                this.state.bottomReply &&
+                <div className='bottom-input' >
+                  <input type="text" onFocus={this.bottomFocus} placeholder='我想说点什么' />
+                </div>
+              }
+            </ReactCSSTransitionGroup>
+            <ReactCSSTransitionGroup
+              transitionName="rise"
+              transitionEnterTimeout={300}
+              transitionLeaveTimeout={300}
+            >
+              {
+                !this.state.bottomReply &&
+                <div className='reply' >
+                  <ReplyBox getData={this.getData} replySuccess={this.replySuccess}
+                    toSignin={this.toSignin} cancle={this.cancle} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+                </div>
+              }
+            </ReactCSSTransitionGroup>
           </section> :
           <div className='loading' ><DataLoading /></div>
         }
@@ -145,10 +179,7 @@ class TopicDetail extends Component {
  * 文章展示部分
  */
 class Article extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
+
   render () {
     var { title, author, is_collect, content, create_at } = this.props.data
     return (
@@ -182,6 +213,11 @@ class Article extends Component {
  * 回复展示部分
  */
 class Reply extends Component {
+
+  cancle = () => {
+    this.props.cancle()
+  }
+
   render () {
     let { replies } = this.props.state.data
     return (
@@ -199,7 +235,7 @@ class Reply extends Component {
                   <section className='reply_author' >
                     <Link to={`/user/${author.loginname}`}>
                       <img className='reply_avatar' src={author.avatar_url} alt="" />
-                      <div className='name_time' >
+                      <div className='name_time'>
                         <p className='reply_author_name' >{author.loginname}</p>
                         <p className='create_at'>{formatDate(create_at)}</p>
                       </div>
@@ -207,7 +243,7 @@ class Reply extends Component {
                     <span className='reply_floor' >{index + 1}楼</span>
                   </section>
                   <section className='reply_content' dangerouslySetInnerHTML={this.props.createMarkup(content)} ></section>
-                  <div className='operation' >
+                  <div className='operation'>
                     <span className='click-reply' onClick={e => { this.props.showReplyBox(index, e) }} >
                       <svg className='icon' aria-hidden="true">
                         <use xlinkHref='#icon-iconfonthuifu'></use>
@@ -219,16 +255,19 @@ class Reply extends Component {
                         <use xlinkHref='#icon-good'></use>
                       </svg>
                     </span>
-
                   </div>
-                  <section>
+                  <ReactCSSTransitionGroup
+                    transitionName="rise"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                  >
                     {
                       this.props.state.current_reply === index &&
                       <ReplyBox placeholder={`@${author.loginname}`} getData={this.props.getData}
-                        replySuccess={this.props.replySuccess} loginname={author.loginname}
+                        replySuccess={this.props.replySuccess} cancle={this.cancle} loginname={author.loginname}
                         data={{ accessToken: this.props.state.accessToken, topic_id: this.props.state.data.id, reply_id: id }} />
                     }
-                  </section>
+                  </ReactCSSTransitionGroup>
                 </li>
               })
             }
@@ -256,6 +295,10 @@ class ReplyBox extends Component {
     })
   };
 
+  cancle = () => {
+    this.props.cancle()
+  }
+
   // 提交回复
   submit = async () => {
     let data = this.props.data
@@ -276,7 +319,7 @@ class ReplyBox extends Component {
           await this.props.getData()
           setTimeout(() => {
             this.props.replySuccess()
-          }, 1500); 
+          }, 1500);
         }
       } else {
         alertTip = '内容不能为空'
@@ -294,7 +337,10 @@ class ReplyBox extends Component {
     return (
       <div className='reply-box' >
         <textarea className='textarea' ref='content' placeholder={this.props.placeholder} ></textarea>
-        <input className='btn' onClick={this.submit} type="button" value='回 复' />
+        <div className='btns'>
+          <input className='btn' onClick={this.cancle} type="button" value='取 消' />
+          <input className='btn' onClick={this.submit} type="button" value='回 复' />
+        </div>
         <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
       </div>
     )

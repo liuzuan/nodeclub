@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './home.less';
-import PublicHeader from '../../common/header/header';
-import PublicFooter from '../../common/footer/footer';
 import { saveHomeScrollBar, saveHomeState } from '../../store/action.js';
 import { formatDate, scrollBar } from '../../config/utils/tool';
-import { DataLoading } from '../../common/index';
+import { DataLoading, PublicHeader, PublicFooter } from '../../common/index';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HomeData } from '../../config/utils/getData';
 import { connect } from 'react-redux';

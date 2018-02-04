@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import './header.less';
 
-
-
-
 class PublicHeader extends Component {
 
   goBack () {
@@ -29,19 +26,19 @@ class PublicHeader extends Component {
     return (
       <header className='header_container'>
         <span className='left' >
-          {
+          { // 返回按钮
             this.props.back &&
             <svg onClick={this.goBack.bind(this)} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-back'></use>
             </svg>
           }
-          {
+          { // 登录成功显示头像
             this.props.avatar && this.props.userInfo.avatar_url &&
             <Link to='/my/selfInfo'>
               <img src={this.props.userInfo.avatar_url} alt="" />
             </Link>
           }
-          {
+          { //  未登录时的头像图标
             !this.props.userInfo.avatar_url && this.props.avatar &&
             <Link to='/signIn' >
               <svg className="icon" aria-hidden="true">
@@ -51,13 +48,13 @@ class PublicHeader extends Component {
         </span>
         <span>{this.props.title}</span>
         <span className='right'>
-          {
+          { // 发表页面的发表图标
             this.props.sent &&
             <svg onClick={this.props.submit} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-fasong'></use>
             </svg>
           }
-          {
+          {// 用户页面的退出按钮
             this.props.logout &&
             <svg onClick={this.logout} className="icon" aria-hidden="true">
               <use xlinkHref='#icon-084tuichu'></use>
@@ -68,7 +65,6 @@ class PublicHeader extends Component {
     )
   }
 }
-
 
 export default withRouter(connect((state) => ({
   userInfo: state.userInfo

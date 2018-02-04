@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../common/header/header';
-import PublicFooter from '../../common/footer/footer';
+import { PublicHeader, PublicFooter} from '../../common/index';
 import { createTopic } from '../../config/utils/getData';
 import './create.less';
 import { Alert } from '../../common/index';

@@ -36,7 +36,7 @@ export const getItem = (key) => {
 export const removeItem = (key) => localStorage.removeItem(key)
 
 /** 
- * 记录滚动条
+ * 获取滚动条位置
 */
 export const scrollBar = () => {
   let t, l;

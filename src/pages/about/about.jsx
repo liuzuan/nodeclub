@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../common/header/header';
+import { PublicHeader } from '../../common/index';
 import './about.less';
 
 export default class About extends Component {

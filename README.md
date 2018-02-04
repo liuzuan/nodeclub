@@ -2,7 +2,7 @@
 
 ## 技术栈
 ```
-基于react + react-router-dom + redux + Ant Design + ES6/7 + less 重写react版cnode社区，使用webpack打包
+基于react + react-router-dom + redux + ES6/7 + less 重写react版cnode社区，使用webpack打包
 ```
 
 ### 项目使用

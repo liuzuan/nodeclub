@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import PublicHeader from '../../../common/header/header';
-import PublicFooter from '../../../common/footer/footer';
-import { NullData } from '../../../common/index';
+import { NullData, PublicFooter, PublicHeader } from '../../../common/index';
 import './message.less';
 import { NavLink, Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';

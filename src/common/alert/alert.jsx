@@ -6,9 +6,7 @@ import './alert.less'
 export default class Alert extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
 
     // 关闭弹框
     this.confirm = () => {
@@ -25,8 +23,8 @@ export default class Alert extends Component {
         {
           this.props.alertStatus && <div className="alert">
             <div className="alert-content">
-              <div className="alert-text">{this.props.alertTip} !</div>
-              <button onClick={this.confirm} className='btn' >确定</button>
+              <div className="alert-text">{this.props.alertTip}&nbsp;!</div>
+              <button onClick={this.confirm} className='btn1' >确定</button>
             </div>
           </div>
         }
