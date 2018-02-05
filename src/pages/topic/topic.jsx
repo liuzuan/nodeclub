@@ -263,8 +263,7 @@ class Reply extends Component {
                   <ReactCSSTransitionGroup
                     transitionName="rise"
                     transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
-                  >
+                    transitionLeaveTimeout={300}>
                     {
                       this.props.state.current_reply === index &&
                       <ReplyBox placeholder={`@${author.loginname}`} getData={this.props.getData}
