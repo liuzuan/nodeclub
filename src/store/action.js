@@ -26,8 +26,6 @@ export const clearUserInfo = () => {
   }
 }
 
-
-
 /**
  * 记录首页滚动条位置
  * 
@@ -38,8 +36,6 @@ export const saveHomeScrollBar = (payload) => {
     payload,
   }
 }
-
-
 
 /**
  * 保存首页数据
@@ -63,7 +59,6 @@ export const saveTopicState = (payload) => {
 
 /**
  * 记录主题页滚动条位置
- * 
  */
 export const saveTopicScrollBar = (payload) => {
   return {

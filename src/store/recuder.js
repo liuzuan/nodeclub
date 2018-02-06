@@ -33,8 +33,13 @@ export const userInfo = (state = defaultState, action = {}) => {
 /**
  * 首页数据
  * home: {
-      state: {},
       scrollBar: {},
+      all: {},
+      good: {},
+      share: {},
+      ask: {},
+      job: {},
+      dev: {},
     }
  */
 export const home = (state = defaultState, action = {}) => {
@@ -44,10 +49,10 @@ export const home = (state = defaultState, action = {}) => {
         ...state,
         ...{scrollBar: action.payload},
       }
-    case type.SAVEHOMESTATE://记录首页数据
+    case type.SAVEHOMESTATE: //记录首页数据
       return {
         ...state,
-        ...{state: action.payload}
+        ...{[action.payload.tab]: action.payload}
       }
     default:
       return state;

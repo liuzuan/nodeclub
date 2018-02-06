@@ -32,7 +32,7 @@ class Home extends Component {
     };
 
     /** 
-     * 下拉加载
+     * 上拉加载
     */
     this.scrollGetData = async () => {
       let newPage = this.state.page + 1
@@ -48,7 +48,7 @@ class Home extends Component {
       let nav_bottom
       switch (tab) {
         case 'all':
-          nav_bottom = '0%';
+          nav_bottom = '0';
           break;
         case 'good':
           nav_bottom = '16.6%';
@@ -80,6 +80,8 @@ class Home extends Component {
         currentTab: tab,
         topicData: HomeData(1, tab, 10)
       })
+      // 切换tab前记录数据到store
+      this.props.saveHomeState(this.tabState())
     };
 
     /** 
@@ -93,22 +95,41 @@ class Home extends Component {
       }
     };
 
+    // tab数据，切换tab前使用 
+    this.tabState = () => {
+      let payload = {
+        tab: this.state.currentTab,
+        data: this.state,
+        scrollBar: scrollBar()
+      }
+      return payload
+    }
+    // home数据，Unmount前使用
+    this.homeState = () => {
+      let payload = {
+        tab: 'home',
+        data: this.state,
+        scrollBar: scrollBar()
+      }
+      return payload
+    }
   }
 
   async componentWillMount () {
-    if (this.props.state) {// 进入首页，store有数据则渲染
-      let state = this.props.state
-      let left = this.props.scrollBar.left
-      let top = this.props.scrollBar.top
-      this.setNavBottom(state.currentTab)
+    if (this.props.state.home) {// 进入首页，store有对应tab数据则渲染
+      let data = this.props.state.home.data
+      let scrollBar = this.props.state.home.scrollBar
+      let left = scrollBar.left
+      let top = scrollBar.top
+      this.setNavBottom(data.currentTab)
       this.setState({
-        currentTab: state.currentTab,
-        topicData: state.topicData,
-        page: state.page,
-        hasMore: state.hasMore,
+        currentTab: data.currentTab,
+        topicData: data.topicData,
+        page: data.page,
+        hasMore: data.hasMore,
       })
       setTimeout(() => { window.scrollTo(left, top) }, 20)
-    } else { //store无数据则发送请求获取数据
+    } else { // 无数据则发送请求获取数据
       this.setState({
         topicData: await HomeData(1, this.state.currentTab, 10)
       })
@@ -123,7 +144,6 @@ class Home extends Component {
   }
 
   /**
-   * 
    * 前进后退获取数据
    */
   async componentWillReceiveProps (nextProps) {
@@ -134,18 +154,29 @@ class Home extends Component {
     } else {
       tab = 'all'
     }
-    this.setState({
-      currentTab: tab,
-      topicData: await HomeData(1, tab, 10)
-    })
+    if (this.props.state[tab]) {
+      let data = this.props.state[tab].data
+      let scrollBar = this.props.state[tab].scrollBar
+      this.setState({
+        currentTab: tab,
+        page: data.page,
+        hasMore: data.hasMore,
+        topicData: data.topicData
+      })
+      setTimeout(() => { window.scrollTo(scrollBar.left, scrollBar.top) }, 20)
+    } else {
+      this.setState({
+        currentTab: tab,
+        topicData: await HomeData(1, tab, 10),
+      })
+    }
   }
 
   /** 
    * 离开页面获取滚动条并记录到store
   */
   componentWillUnmount () {
-    this.props.saveHomeScrollBar(scrollBar())
-    this.props.saveHomeState(this.state)
+    this.props.saveHomeState(this.homeState())
   }
 
   render () {
@@ -175,7 +206,7 @@ class Home extends Component {
         <PublicFooter />
         <ToTop />
       </div>
-    );
+    )
   }
 }
 
@@ -241,7 +272,7 @@ class TopicList extends Component {
 }
 
 export default connect(state => ({
-  state: state.home.state,
+  state: state.home,
   scrollBar: state.home.scrollBar,
 }), {
     saveHomeScrollBar, saveHomeState
