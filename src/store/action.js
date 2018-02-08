@@ -26,16 +26,6 @@ export const clearUserInfo = () => {
   }
 }
 
-/**
- * 记录首页滚动条位置
- * 
- */
-export const saveHomeScrollBar = (payload) => {
-  return {
-    type: type.SAVEHOMESCROLLBAR,
-    payload,
-  }
-}
 
 /**
  * 保存首页数据

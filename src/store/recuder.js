@@ -33,7 +33,6 @@ export const userInfo = (state = defaultState, action = {}) => {
 /**
  * 首页数据
  * home: {
-      scrollBar: {},
       all: {},
       good: {},
       share: {},
@@ -44,11 +43,6 @@ export const userInfo = (state = defaultState, action = {}) => {
  */
 export const home = (state = defaultState, action = {}) => {
   switch (action.type) {
-    case type.SAVEHOMESCROLLBAR://记录首页滚动条位置
-      return {
-        ...state,
-        ...{scrollBar: action.payload},
-      }
     case type.SAVEHOMESTATE: //记录首页数据
       return {
         ...state,

@@ -122,9 +122,9 @@ class TopicDetail extends Component {
       this.setState({
         data: state.data,
         current_reply: state.current_reply,
-        accessToken: state.accessToken,
+        accessToken: this.props.userInfo.accessToken,
       })
-      setTimeout(() => { window.scrollTo(left, top) }, 20);
+      setTimeout(() => { window.scrollTo(left, top) }, 500);
     } else {
       await this.getData()
     }
@@ -147,8 +147,7 @@ class TopicDetail extends Component {
             <ReactCSSTransitionGroup
               transitionName="rise"
               transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}
-            >
+              transitionLeaveTimeout={300}>
               {
                 this.state.bottomReply &&
                 <div className='bottom-input' onClick={this.bottomFocus}>
@@ -159,8 +158,7 @@ class TopicDetail extends Component {
             <ReactCSSTransitionGroup
               transitionName="rise"
               transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}
-            >
+              transitionLeaveTimeout={300}>
               {
                 !this.state.bottomReply &&
                 <div className='reply' >
@@ -217,11 +215,6 @@ class Article extends Component {
  * 回复展示部分
  */
 class Reply extends Component {
-
-  cancle = () => {
-    this.props.cancle()
-  }
-
   render () {
     let { replies } = this.props.state.data
     return (
@@ -267,7 +260,7 @@ class Reply extends Component {
                     {
                       this.props.state.current_reply === index &&
                       <ReplyBox placeholder={`@${author.loginname}`} getData={this.props.getData}
-                        replySuccess={this.props.replySuccess} cancle={this.cancle} loginname={author.loginname}
+                        replySuccess={this.props.replySuccess} cancle={this.props.cancle} loginname={author.loginname}
                         data={{ accessToken: this.props.state.accessToken, topic_id: this.props.state.data.id, reply_id: id }} />
                     }
                   </ReactCSSTransitionGroup>

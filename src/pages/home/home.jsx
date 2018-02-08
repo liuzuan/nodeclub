@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './home.less';
-import { saveHomeScrollBar, saveHomeState } from '../../store/action.js';
+import { saveHomeState } from '../../store/action.js';
 import { formatDate, scrollBar } from '../../config/utils/tool';
 import { DataLoading, PublicHeader, PublicFooter } from '../../common/index';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -80,7 +80,7 @@ class Home extends Component {
         currentTab: tab,
         topicData: HomeData(1, tab, 10)
       })
-      // 切换tab前记录数据到store
+      // 切换tab前保存数据到store
       this.props.saveHomeState(this.tabState())
     };
 
@@ -173,7 +173,7 @@ class Home extends Component {
   }
 
   /** 
-   * 离开页面获取滚动条并记录到store
+   * 离开页面获取滚动条位置和本页数据并保存到store
   */
   componentWillUnmount () {
     this.props.saveHomeState(this.homeState())
@@ -275,5 +275,5 @@ export default connect(state => ({
   state: state.home,
   scrollBar: state.home.scrollBar,
 }), {
-    saveHomeScrollBar, saveHomeState
+    saveHomeState
   })(Home);
