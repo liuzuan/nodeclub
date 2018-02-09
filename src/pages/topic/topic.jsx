@@ -289,7 +289,6 @@ class ReplyBox extends Component {
     alertStatus: false,
     alertTip: '',
   }
-
   // 关闭弹窗
   closeAlert = () => {
     this.setState({
