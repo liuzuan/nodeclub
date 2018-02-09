@@ -21,14 +21,19 @@ class TopicDetail extends Component {
       alertStatus: false, //弹框状态
       alertTip: '', //弹框提示文字
       bottomReply: true,
+      noTopic: false,
     };
     this.getData = async () => { //获取主题详情数据
       let Data = await GetTopic(this.props.match.params.id, this.state.accessToken)
-      this.setState({
-        data: Data,//所有数据
-      })
+      if (Data) {
+        this.setState({
+          data: Data,//所有数据
+        })
+      } else {
+        this.setState({ noTopic: true })
+      }
     };
-    // 关闭弹款
+    // 关闭弹框
     this.closeAlert = () => {
       this.setState({
         alertStatus: false,
@@ -115,7 +120,7 @@ class TopicDetail extends Component {
   }
 
   async componentWillMount () {
-    if (this.props.state && this.props.state.data.id === this.props.match.params.id) {
+    if (this.props.state && this.props.state.data && this.props.state.data.id === this.props.match.params.id) {
       let state = this.props.state
       let left = this.props.scrollBar.left
       let top = this.props.scrollBar.top
@@ -139,36 +144,38 @@ class TopicDetail extends Component {
     return (
       <div className='topic-container' >
         <PublicHeader back title='主&nbsp;题' />
-        {this.state.data ?
-          <section>
-            <Article data={this.state.data} handleCollect={this.handleCollect} createMarkup={this.createMarkup} />
-            <Reply state={this.state} cancle={this.replyCancle} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
-              createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
-            <ReactCSSTransitionGroup
-              transitionName="rise"
-              transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}>
-              {
-                this.state.bottomReply &&
-                <div className='bottom-input' onClick={this.bottomFocus}>
-                  <input type="text" disabled='true' placeholder='我想说点什么...' />
-                </div>
-              }
-            </ReactCSSTransitionGroup>
-            <ReactCSSTransitionGroup
-              transitionName="rise"
-              transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}>
-              {
-                !this.state.bottomReply &&
-                <div className='reply' >
-                  <ReplyBox getData={this.getData} replySuccess={this.replySuccess}
-                    toSignin={this.toSignin} cancle={this.cancle} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
-                </div>
-              }
-            </ReactCSSTransitionGroup>
-          </section> :
-          <div className='loading' ><DataLoading /></div>
+        {
+          !this.state.noTopic ? (this.state.data ?
+            <section>
+              <Article data={this.state.data} handleCollect={this.handleCollect} createMarkup={this.createMarkup} />
+              <Reply state={this.state} cancle={this.replyCancle} current_reply={this.state.current_reply} showReplyBox={this.showReplyBox}
+                createMarkup={this.createMarkup} ups={this.ups} replySuccess={this.replySuccess} getData={this.getData} />
+              <ReactCSSTransitionGroup
+                transitionName="rise"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}>
+                {
+                  this.state.bottomReply &&
+                  <div className='bottom-input' onClick={this.bottomFocus}>
+                    <input type="text" disabled placeholder='我想说点什么...' />
+                  </div>
+                }
+              </ReactCSSTransitionGroup>
+              <ReactCSSTransitionGroup
+                transitionName="rise"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}>
+                {
+                  !this.state.bottomReply &&
+                  <div className='reply' >
+                    <ReplyBox getData={this.getData} replySuccess={this.replySuccess}
+                      toSignin={this.toSignin} cancle={this.cancle} data={{ accessToken: this.state.accessToken, topic_id: this.state.data.id }} />
+                  </div>
+                }
+              </ReactCSSTransitionGroup>
+            </section> :
+            <div className='loading' ><DataLoading /></div>
+          ) : <div className='no-topic' >话题不存在或已被删除...</div>
         }
         <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
         <ToTop />
