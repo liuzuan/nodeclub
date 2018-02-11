@@ -15,15 +15,15 @@ export default class RouteConfig extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/" exact component={home} />
+          <Route path='/' exact component={home} />
           <Route path='/topic/create' exact component={create} />
           <Route path='/my/selfInfo' component={selfInfo} />
           <Route path='/my/message' component={message} />
-          <Route path="/topic/:id" component={topic} />
+          <Route path='/topic/:id' component={topic} />
           <Route path='/user/:id' component={user} />
           <Route path='/signIn' component={signIn} />
           <Route path='/about' component={about} />
-          <Redirect to="/" />
+          <Redirect to='/' />
         </Switch>
       </Router>
     )

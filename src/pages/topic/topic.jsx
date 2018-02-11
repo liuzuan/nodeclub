@@ -101,7 +101,7 @@ class TopicDetail extends Component {
       }
       this.cancle()
     };
-    // 底部回复区获得焦点后消失，显示回复框 
+    // 底部回复区获得焦点后消失，显示回复框
     this.bottomFocus = () => {
       if (this.state.accessToken) {
         this.setState({ bottomReply: false })
@@ -179,7 +179,7 @@ class TopicDetail extends Component {
         }
         <Alert closeAlert={this.closeAlert} alertTip={this.state.alertTip} alertStatus={this.state.alertStatus} />
         <ToTop />
-      </div >
+      </div>
     );
   }
 }
@@ -194,7 +194,6 @@ class Article extends Component {
     return (
       <div>
         <section className='article_content'>
-          {author &&
             <div className='author'>
               <Link to={`/user/${author.loginname}`}>
                 <img className='author_avatar' src={author.avatar_url} alt="" />
@@ -209,7 +208,6 @@ class Article extends Component {
                 </svg>
               </span>
             </div>
-          }
           <p className='topic_title'>{title}</p>
           <div className='markdown' dangerouslySetInnerHTML={this.props.createMarkup(content)} />
         </section>

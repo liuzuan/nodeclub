@@ -8,6 +8,7 @@ import { HomeData } from '../../config/utils/getData';
 import { connect } from 'react-redux';
 import { ToTop } from '../../common/index';
 import { Link } from 'react-router-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 /**
  * 首页模块入口
@@ -31,7 +32,7 @@ class Home extends Component {
       nav_bottom: '0',
     };
 
-    /** 
+    /**
      * 上拉加载
     */
     this.scrollGetData = async () => {
@@ -71,7 +72,7 @@ class Home extends Component {
       this.setState({ nav_bottom: nav_bottom })
     }
 
-    /** 
+    /**
      * 点击导航选择话题分类
     */
     this.tabSelect = (tab) => {
@@ -84,7 +85,7 @@ class Home extends Component {
       this.props.saveHomeState(this.tabState())
     };
 
-    /** 
+    /**
      * 列表项tab过滤(good => 精华)
     */
     this.formatTab = (tab) => {
@@ -95,7 +96,7 @@ class Home extends Component {
       }
     };
 
-    // tab数据，切换tab前使用 
+    // tab数据，切换tab前使用
     this.tabState = () => {
       let payload = {
         tab: this.state.currentTab,
@@ -172,7 +173,7 @@ class Home extends Component {
     }
   }
 
-  /** 
+  /**
    * 离开页面获取滚动条位置和本页数据并保存到store
   */
   componentWillUnmount () {
@@ -180,6 +181,7 @@ class Home extends Component {
   }
 
   render () {
+    // console.log(this.props)
     return (
       <div>
         <PublicHeader title='首&nbsp;页' avatar />
@@ -198,10 +200,16 @@ class Home extends Component {
             </section>
             <div className='nav-bottom' style={{ left: this.state.nav_bottom }} ></div>
           </nav>
-          <TopicList
-            state={this.state}
-            currentTab={this.state.currentTab} formatTab={this.formatTab}
-            scrollGetData={this.scrollGetData} />
+          <ReactCSSTransitionGroup
+            transitionName="slide-in"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}>
+            <TopicList
+              // key={this.props.location.search}
+              state={this.state}
+              currentTab={this.state.currentTab} formatTab={this.formatTab}
+              scrollGetData={this.scrollGetData} />
+          </ReactCSSTransitionGroup>
         </main>
         <PublicFooter />
         <ToTop />

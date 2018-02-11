@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
-// import { AppContainer } from 'react-hot-loader'
 import registerServiceWorker from './registerServiceWorker';
 import { saveUserInfo } from './store/action.js'
 import { getItem } from './config/utils/tool';
@@ -22,9 +21,7 @@ if (localStorage.userInfo) {
 const render = Component => {
   ReactDOM.render(
     <Provider store={store}>
-      {/* <AppContainer> */}
-        <Component />
-      {/* </AppContainer> */}
+      <Component />
     </Provider>,
     document.getElementById('root')
   )
