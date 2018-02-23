@@ -28,5 +28,4 @@ npm start
 - [x] 页面跳转实现登录拦截
 
 ### [点击or扫描二维码查看效果](https://liuzuan.github.io/cnode/)
- [![扫一扫二维码查看效果](https://github.com/liuzuan/react-cnode/blob/master/src/assets/react-cnode.png)]
-(https://liuzuan.github.io/cnode/)
+ [![扫一扫二维码查看效果](https://github.com/liuzuan/react-cnode/blob/master/src/assets/react-cnode.png)](https://liuzuan.github.io/cnode/)
