@@ -34,12 +34,16 @@ class Home extends Component {
 
     /**
      * 上拉加载
-    */
+     */
     this.scrollGetData = async () => {
       let newPage = this.state.page + 1
       let res = await HomeData(newPage, this.state.currentTab, 10)
       let newTopicData = [...this.state.topicData, ...res]
-      this.setState({ page: newPage, topicData: newTopicData, hasMore: !res.length < 10 })
+      this.setState({
+        page: newPage,
+        topicData: newTopicData,
+        hasMore: !res.length < 10
+      })
     }
 
     /**
@@ -69,12 +73,14 @@ class Home extends Component {
         default:
           nav_bottom = '0';
       }
-      this.setState({ nav_bottom: nav_bottom })
+      this.setState({
+        nav_bottom: nav_bottom
+      })
     }
 
     /**
      * 点击导航选择话题分类
-    */
+     */
     this.tabSelect = (tab) => {
       this.setNavBottom(tab)
       this.setState({
@@ -87,7 +93,7 @@ class Home extends Component {
 
     /**
      * 列表项tab过滤(good => 精华)
-    */
+     */
     this.formatTab = (tab) => {
       for (let k of this.state.navItems) {
         if (k['tab'] === tab) {
@@ -117,7 +123,7 @@ class Home extends Component {
   }
 
   async componentWillMount () {
-    if (this.props.state.home) {// 进入首页，store有对应tab数据则渲染
+    if (this.props.state.home) { // 进入首页，store有对应tab数据则渲染
       let data = this.props.state.home.data
       let scrollBar = this.props.state.home.scrollBar
       let left = scrollBar.left
@@ -129,7 +135,9 @@ class Home extends Component {
         page: data.page,
         hasMore: data.hasMore,
       })
-      setTimeout(() => { window.scrollTo(left, top) }, 20)
+      setTimeout(() => {
+        window.scrollTo(left, top)
+      }, 20)
     } else { // 无数据则发送请求获取数据
       this.setState({
         topicData: await HomeData(1, this.state.currentTab, 10)
@@ -143,7 +151,6 @@ class Home extends Component {
       })
     }
   }
-
   /**
    * 前进后退获取数据
    */
@@ -164,7 +171,9 @@ class Home extends Component {
         hasMore: data.hasMore,
         topicData: data.topicData
       })
-      setTimeout(() => { window.scrollTo(scrollBar.left, scrollBar.top) }, 20)
+      setTimeout(() => {
+        window.scrollTo(scrollBar.left, scrollBar.top)
+      }, 20)
     } else {
       this.setState({
         currentTab: tab,
@@ -175,13 +184,12 @@ class Home extends Component {
 
   /**
    * 离开页面获取滚动条位置和本页数据并保存到store
-  */
+   */
   componentWillUnmount () {
     this.props.saveHomeState(this.homeState())
   }
 
   render () {
-    // console.log(this.props)
     return (
       <div>
         <PublicHeader title='首&nbsp;页' avatar />

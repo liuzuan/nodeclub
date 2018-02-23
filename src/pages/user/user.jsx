@@ -58,7 +58,7 @@ class User extends Component {
               </div>
             </section>
             <section className='user-topic' >
-              <Anchor offsetTop={50}>
+              <Anchor offsetTop={49}>
                 <nav>
                   <p onClick={this.navChange.bind(this, 'recent_topics')} className={curTab === 'recent_topics' ? 'active' : ''} >发表的话题</p>
                   <p onClick={this.navChange.bind(this, 'recent_replies')} className={curTab === 'recent_replies' ? 'active' : ''}>回复的话题</p>

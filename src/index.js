@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './style/reset.less';
 import './assets/iconfonts/iconfont.js';
+import './config/utils/px2rem';
 import registerServiceWorker from './registerServiceWorker';
 import { saveUserInfo } from './store/action.js'
 import { getItem } from './config/utils/tool';

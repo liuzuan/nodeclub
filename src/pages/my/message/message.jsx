@@ -10,43 +10,43 @@ import { formatDate } from '../../../config/utils/tool';
  * 模块入口
  */
 class Message extends Component {
-  constructor(props) {
-    super(props);
+  constructor( props ) {
+    super( props );
     this.state = {
-      message: [],//所有消息
-      showingMsg: [],// 展示中的消息
+      message: [], //所有消息
+      showingMsg: [], // 展示中的消息
     };
-    this.getMessage = async () => {
-      if (this.props.accessToken) {
-        let res = await getMsg(this.props.accessToken)
+    this.getMessage = async() => {
+      if ( this.props.accessToken ) {
+        let res = await getMsg( this.props.accessToken )
         let state = this.props.location.state
-        this.setState({ message: res, showingMsg: res[state ? state.type : 'has_read_messages'] })
+        this.setState( { message: res, showingMsg: res[ state ? state.type : 'has_read_messages' ] } )
       }
     };
-    this.createMarkup = (html) => {
+    this.createMarkup = ( html ) => {
       return {
         __html: html
       }
     }
   }
 
-  async componentWillMount () {
-    if (this.props.location.pathname === '/my/message') {
-      this.props.history.replace('/my/message/has_read')
+  async componentWillMount() {
+    if ( this.props.location.pathname === '/my/message' ) {
+      this.props.history.replace( '/my/message/has_read' )
     }
-    if (this.props.accessToken) {
+    if ( this.props.accessToken ) {
       await this.getMessage()
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.location.state !== this.props.location.state) {
-      this.setState({ showingMsg: this.state.message[nextProps.location.state.type] })
+  componentWillReceiveProps( nextProps ) {
+    if ( nextProps.location.state !== this.props.location.state ) {
+      this.setState( { showingMsg: this.state.message[ nextProps.location.state.type ] } )
     }
   }
 
-  render () {
-    if (!this.props.accessToken) {
+  render() {
+    if ( !this.props.accessToken ) {
       return <Redirect to={{ pathname: '/signin', state: { from: this.props.location }}} />
     }
     return (
@@ -65,7 +65,8 @@ class Message extends Component {
             !this.state.showingMsg.length ?
               <div className='nomsg' >
                 <NullData />
-              </div>:
+              </div>
+              :
               <div className='message-list'>
                 {this.state.showingMsg.map((item, index) => {
                   var { author, create_at, reply, topic, type } = item
@@ -98,6 +99,6 @@ class Message extends Component {
   }
 }
 
-export default connect(state => ({
+export default connect( state => ( {
   accessToken: state.userInfo.accessToken
-}))(Message)
+} ) )( Message )
