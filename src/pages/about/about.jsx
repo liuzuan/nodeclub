@@ -9,7 +9,7 @@ export default class About extends Component {
       <div>
         <PublicHeader title='关于' back />
         <section className='about-container' >
-          <ul>功能：</ul>
+          <p>功能：</p>
           <li>登录</li>
           <li>退出</li>
           <li>用户信息</li>
@@ -21,8 +21,7 @@ export default class About extends Component {
           <li>页面后退，数据还原</li>
           <li>主题详情，回复，点赞</li>
           <li>页面跳转，不再执行此页面的ajax请求</li>
-          <br />
-          <ul>技术栈：</ul>
+          <p>技术栈：</p>
           <li>react + react-router V4 + redux + ES6/7 + less 重写cnode社区，使用webpack打包</li>
         </section>
       </div>

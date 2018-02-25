@@ -1,12 +1,16 @@
-(function (psdw) {
-  var dpr = 0,
-    rem = 0,
-    scale = 0;
-  var htmlDOM = document.documentElement;
-  dpr = window.devicePixelRatio;
-  var htmlWidth = htmlDOM.clientWidth || document.body.clientWidth;;
-  scale = htmlWidth / psdw;
-  rem = psdw / 10 * scale;
-  htmlDOM.style.fontSize = rem + 'px';
-  htmlDOM.setAttribute('data-dpr', dpr)
-})(750)
+( function ( psdw ) {
+  let dpr = window.devicePixelRatio;
+  let htmlDOM = document.documentElement;
+  let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+  let recalc = function () {
+    let htmlWidth = htmlDOM.clientWidth || document.body.clientWidth;
+    let scale = htmlWidth / psdw;
+    let rem = 10 * scale;
+    htmlDOM.style.fontSize = rem + 'px';
+    htmlDOM.setAttribute( 'data-dpr', dpr );
+  }
+  if ( !document.addEventListener ) return;
+  window.addEventListener( resizeEvt, recalc, false );
+  document.addEventListener( 'DOMContentLoaded', recalc, false );
+  // window.addEventListener("load", recalc, false);
+} )( 375 )

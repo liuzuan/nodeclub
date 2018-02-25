@@ -4,34 +4,38 @@
 .user-container {
   margin-top: 49px;
   .user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    box-sizing: border-box;
     padding: 30px;
     background: @color;
     z-index: 99;
     overflow: hidden;
     .borderBottom(#ccc);
     img {
-      .wh(100px);
+      display: block;
+      .wh(10rem);
+      max-width: 200px;
+      max-height: 200px;
       .circleImg;
-      float: left;
       border: 1px solid #ccc;
     }
     div {
-      float: right;
-      p {
-        line-height: 1.6;
-        text-align: right;
-      }
       .name {
-        .font(26px, right, 500, black);
+        .font(2.6rem, right, 500, black);
+      }
+      p {
+        font-size: 1.2rem;
+        text-align: right;
       }
     }
   }
   .user-topic {
     nav {
-      .wh(100%, 40px);
-      line-height: 40px;
+      font-size: 1.4rem;
+      .wh(100%, 4rem);
+      line-height: 4rem;
       display: flex;
       background: @color;
       z-index: 99;
@@ -54,7 +58,7 @@
       }
       .topic-list-cell {
         color: black;
-        padding: 10px;
+        padding: 1rem;
         .borderBottom;
         a {
           color: black;
@@ -62,17 +66,19 @@
         header {
           overflow: hidden;
           img {
-            .wh(40px);
+            .wh(4rem);
             .circleImg;
             float: left;
           }
           .name {
-            height: 40px;
-            line-height: 40px;
+            font-size: 1.6rem;
+            height: 4rem;
+            line-height: 4rem;
             float: left;
           }
           .time {
             .name;
+            font-size: 1.4rem;
             color: #aaa;
             float: right;
           }
@@ -81,11 +87,12 @@
           display: block;
           width: 80%;
           margin: 0 auto;
-          padding: 5px;
-          font-size: 16px;
+          padding: .5rem;
+          font-size: 1.6rem;
           .text-overflow;
         }
       }
     }
   }
 }
+

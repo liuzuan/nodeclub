@@ -6,25 +6,27 @@
   .self-container {
     margin-top: 50px;
     .user-info {
-      padding: 20px 20px 0 20px;
+      padding: 2rem 2rem 0 2rem;
       overflow: hidden;
       .borderBottom;
       .login {
         .user-name {
-          .font(20px, center, 700, @style-color);
-          margin: 10px;
+          .font(2rem, center, 700, @style-color);
+          margin: 1rem;
         }
         div {
           display: flex;
           justify-content: space-between;
           .wh(100%);
-          margin: 10px 0;
-          .font(14px, left,  400, rgb(85, 84, 84));
+          margin: 1rem 0;
+          .font(1.4rem, left,  400, rgb(85, 84, 84));
         }
         .user-img {
           margin: 0 auto;
           display: block;
-          .wh(120px);
+          .wh(12rem);
+          max-width: 250px;
+          max-height: 250px;
           .circleImg;
           box-shadow: 0 0 20px 0 #aaa;
         }
@@ -33,42 +35,43 @@
         color: #ccc;
         .icon {
           .login > .user-img;
-          font-size: 100px;
+          font-size: 10rem;
         }
         p {
-          .font(18px, center,  400, rgb(85, 84, 84));
-          padding: 10px 0;
+          .font(1.8rem, center,  400, rgb(85, 84, 84));
+          padding: 1rem 0;
           color: @style-color;
         }
       }
     }
   }
   .nav {
-    padding: 20px;
+    padding: 2rem;
     .nav-item {
       display: block;
-      height: 40px;
-      line-height: 40px;
-      text-indent: 15px;
+      height: 4rem;
+      line-height: 4rem;
+      text-indent: 1.5rem;
       margin-bottom: 40px;
-      border-radius: 40px;
-      .font(14px, left, 300, black);
-      box-shadow: 0 2px 2px 2px #ccc;
+      border-radius: 4.0rem;
+      .font(1.4rem, left, 300, black);
+      box-shadow: 0 .2rem .2rem .2rem #ccc;
       .icon {
         color: @style-color;
-        font-size: 22px;
-        padding-right: 5px; 
+        font-size: 2.2rem;
+        padding-right: .5rem; 
       }
       .amount {
         float: right;
-        margin: 7px ;
-        .wh(25px);
+        margin: .7rem ;
+        .wh(2.5rem);
         .circleImg;
-        .font(12px, center, 400, #fff);
-        line-height: 25px;
+        .font(1.2rem, center, 400, #fff);
+        line-height: 2.5rem;
         text-indent: 0;
         background: @style-color;
       }
     }
   }
 }
+

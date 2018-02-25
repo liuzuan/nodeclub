@@ -37,7 +37,7 @@
     .message-list {
       margin-bottom: 50px;
       .list-cell {
-        padding: 10px;
+        padding: 1rem;
         .borderBottom;
         overflow: hidden;
         a {
@@ -45,35 +45,39 @@
         }
         img {
           float: left;
-          .wh(40px);
+          .wh(4rem);
           .circleImg;
         }
         div {
           overflow: hidden;
+          p, span {
+            .font(1.3rem, left, 400, #000);
+          }
           .name-time {
             width: 100%;
             display: inline;
             float: left;
             span {
-              margin: 0 5px;
+              margin: 0 .5rem;
             }
             .name {
-              .font(15px, left, 400, black);
+              color: #000;
             }
             .time {
-              .font(13px, left, 300, #aaa)
+              color: #aaa;
             }
           }
           .type {
+            font-weight: 300;
             width: 100%;
-            margin: 0 5px;
+            margin: 0 .5rem;
           }
         }
         .message-text {
           display: block;
-          margin: 10px;
-          padding: 0 10px;
-          border-radius: 5px;
+          margin: 1rem;
+          padding: 0 1rem;
+          border-radius: .5rem;
           background: #eee;
         }
       }

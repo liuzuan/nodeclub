@@ -1,4 +1,5 @@
 @import (reference) '../../style/mixin.less';
+
 .rise-enter {
   transform: translate3d(0, 100%, 0);
   opacity: 0;
@@ -23,29 +24,7 @@
 
 .topic-container {
   margin-top: 50px;
-  .bottom-input {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    .wh(100%, 40px);
-    background: #fff;
-    z-index: 99;
-    border-top: 1px solid #eee;
-    input {
-      display: block;
-      .wh(80%, 30px);
-      margin: 5px auto;
-      border-radius: 30px;
-      // background: #fff;
-      border: 1px solid #ccc;
-      outline: 0;
-      text-indent: 15px;
-      &::-webkit-input-placeholder {
-        color: rgb(116, 113, 113);
-        font-weight: 300;
-      }
-    }
-  }
+
   .reply {
     position: fixed;
     bottom: 0;
@@ -61,13 +40,34 @@
     text-align: center;
     margin-top: 100px;
   }
+  .bottom-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    .wh(100%, 40px);
+    background: #fff;
+    z-index: 99;
+    border-top: 1px solid #eee;
+    input {
+      display: block;
+      .wh(80%, 30px);
+      margin: 5px auto;
+      border-radius: 30px; // background: #fff;
+      border: 1px solid #ccc;
+      outline: 0;
+      text-indent: 15px;
+      &::-webkit-input-placeholder {
+        color: rgb(116, 113, 113);
+        font-weight: 300;
+      }
+    }
+  }
 }
 
 .article_content {
   .author {
     overflow: hidden;
-    padding: 10px;
-    .borderBottom;
+    padding: 10px; // .borderBottom;
     .author_avatar {
       float: left;
       display: block;
@@ -76,7 +76,7 @@
     }
     .name-time {
       float: left;
-      height: 40px;
+      height: 4px;
       .author-name {
         margin-bottom: 0;
         font-size: 18px;
@@ -204,6 +204,24 @@
       outline: none;
       border-radius: 5px;
       background: @style-color;
+    }
+  }
+}
+
+@media screen and(min-width: 415px) {
+  .article_content,
+  .replies_content,
+  .reply-box {
+    max-width: 50%;
+    min-width: 414px;
+    margin: 0 auto;
+  }
+  .topic-container {
+    .bottom-input {
+      input {
+        max-width: 50%;
+        min-width: 414px;
+      }
     }
   }
 }

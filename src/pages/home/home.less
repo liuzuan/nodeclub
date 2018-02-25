@@ -45,31 +45,31 @@
   .topic_cell {
     border-radius: 20px;
     box-shadow: 0 2px 3px 3px #eee;
-    margin: 15px 10px;
+    margin: 1.5rem 1.0rem;
     .author {
-      padding: 10px 3px 10px 10px;
+      padding: 1rem;
       overflow: hidden;
       .topic_cell_avatar {
         float: left;
-        .wh(40px, 40px);
+        .wh(4rem, 4rem);
         .circleImg;
       }
       .name_time {
         float: left;
         .author_name {
-          .font(16px, left, 500, black)
+          .font(1.6rem, left, 500, black)
         }
         .time {
-          .font(14px, left, 400, rgb(133, 131, 131))
+          .font(1.4rem, left, 400, rgb(133, 131, 131))
         }
       }
       .topic_type {
         float: right;
-        font-size: 13px;
+        font-size: 1.3rem;
         color: @color;
-        padding: 2px 6px;
+        padding: .2rem .6rem;
         border: 1px solid @color;
-        transform: rotate(45deg)
+        // transform: rotate(45deg)
       }
       .isTop {
         .topic_type;
@@ -85,7 +85,7 @@
     .topic_title {
       margin: 0 25px;
       padding-bottom: 10px;
-      .font(16px, left, 400, black);
+      .font(1.6rem, left, 400, black);
       .borderBottom;
       .text-overflow;
     }
@@ -93,9 +93,9 @@
       .flex(space-between);
       margin: 0 25px;
       padding: 10px 0;
-      .font(14px, left, 400, @color);
+      .font(1.4rem, left, 400, @color);
       .icon {
-        font-size: 20px;
+        font-size: 2rem;
       }
     }
   }
