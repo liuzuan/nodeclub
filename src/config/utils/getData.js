@@ -29,4 +29,3 @@ export const user = (loginname) => axios('get', '/user/' + loginname)
 
 // 获取全部消息
 export const getMsg = (accesstoken) => axios('get', '/messages', { accesstoken })
-

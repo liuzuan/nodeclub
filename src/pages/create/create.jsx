@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PublicHeader, PublicFooter} from '../../common/index';
+import { PublicHeader, PublicFooter } from '../../common/index';
 import { createTopic } from '../../config/utils/getData';
 import './create.less';
 import { Alert } from '../../common/index';
@@ -21,21 +21,21 @@ class Create extends Component {
       })
     };
     // 提交发表
-    this.submit = async () => {
+    this.submit = async() => {
       let accesstoken = this.props.accessToken
       let title = this.refs.title.value
       let tab = this.refs.tab.value
       let content = this.refs.content.value
       let alertTip
-      if (title.length < 10) {
+      if(title.length < 10) {
         alertTip = '标题字数不足'
-      } else if (!tab) {
+      } else if(!tab) {
         alertTip = '请选择一种类型'
-      } else if (!content) {
+      } else if(!content) {
         alertTip = '内容不能为空'
       } else {
         let res = await createTopic(accesstoken, title, tab, content)
-        if (res.success) {
+        if(res.success) {
           alertTip = '发表成功'
         } else {
           alertTip = '发表失败'
@@ -48,11 +48,15 @@ class Create extends Component {
     }
   }
 
-  render () {
-    if (!this.props.accessToken) {
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
+  render() {
+    if(!this.props.accessToken) {
       return <Redirect to={{ pathname: '/signin', state: { from: this.props.location } }} />
     }
-    return (
+    return(
       <div>
         <PublicHeader avatar sent title='发&nbsp;表' submit={this.submit} />
         <main className='create-container' >

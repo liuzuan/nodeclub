@@ -7,9 +7,6 @@ export const CLEARUSERINFO = 'CLEARUSERINFO';
 //保存首页数据
 export const SAVEHOMESTATE = 'SAVEHOMESTATE';
 
-// 保存主题详情页滚动条位置
-export const SAVETOPICSCROLLBAR = 'SAVETOPICSCROLLBAR';
- 
 // 保存主题详情页数据
 export const SAVETOPICSTATE = 'SAVETOPICSTATE';
 

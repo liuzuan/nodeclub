@@ -56,21 +56,18 @@ export const home = (state = defaultState, action = {}) => {
 /**
  * 主题页数据
  * topic: {
-      state: {},
-      scrollBar: {},
+      id: {
+        data: {},
+        scrollBar: {}
+      },
     }
  */
 export const topic = (state = defaultState, action = {}) => {
   switch (action.type) {
-    case type.SAVETOPICSCROLLBAR://记录主题页滚动条位置
+    case type.SAVETOPICSTATE:// 记录主题页数据
       return {
         ...state,
-        ...{scrollBar: action.payload},
-      }
-    case type.SAVETOPICSTATE://记录主题页数据
-      return {
-        ...state,
-        ...{state: action.payload}
+        ...{[action.payload.id]: action.payload}
       }
     default:
       return state;

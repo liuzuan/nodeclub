@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PublicHeader, PublicFooter }from '../../../common/index';
+import { PublicHeader, PublicFooter } from '../../../common/index';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './selfInfo.less';
@@ -13,20 +13,20 @@ class SelfInfo extends Component {
       loginname: this.props.userInfo.loginname || '',
       user: '',
       navList: [
-        { id: '1', title: '最近发表', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type:'recent_topics' },
-        { id: '2', title: '最近回复', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type:'recent_replies' },
+        { id: '1', title: '最近发表', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type: 'recent_topics' },
+        { id: '2', title: '最近回复', route: `/user/${this.props.userInfo.loginname}`, icon: '#icon-14', type: 'recent_replies' },
         { id: '3', title: '发表话题', route: '/topic/create', icon: '#icon-fasong' },
         { id: '4', title: '关于', route: '/about', icon: '#icon-svgabout' },
       ]
     };
     this.navClick = (item) => {
-      if (item.id === '3') {
-          this.props.history.push({pathname:item.route, state:{from:this.props.location}})
-      } else if (item.id === '4'){
+      if(item.id === '3') {
+        this.props.history.push({ pathname: item.route, state: { from: this.props.location } })
+      } else if(item.id === '4') {
         this.props.history.push('/about')
       } else {
-        if (this.props.userInfo.loginname) {
-          this.props.history.push({ pathname: item.route, state: { type: item.type} })
+        if(this.props.userInfo.loginname) {
+          this.props.history.push({ pathname: item.route, state: { type: item.type } })
         } else {
           this.props.history.push('/signin')
         }
@@ -34,26 +34,26 @@ class SelfInfo extends Component {
     }
   }
 
-  async componentWillMount () {
-    if (this.state.loginname) {
+  async componentWillMount() {
+    if(this.state.loginname) {
       let res = await user(this.state.loginname)
-      if (res) {
+      if(res) {
         this.setState({ user: res })
       }
     }
 
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.userInfo.loginname === '') {
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.userInfo.loginname === '') {
       this.setState({ user: '' })
     }
   }
 
-  render () {
+  render() {
     var { avatar_url, loginname } = this.props.userInfo
     var { score, recent_replies, recent_topics, create_at } = this.state.user
-    return (
+    return(
       <div className='selfInfo-container' >
         <PublicHeader logout title='个人信息' />
         <section className='self-container' >

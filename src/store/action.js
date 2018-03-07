@@ -47,15 +47,6 @@ export const saveTopicState = (payload) => {
   }
 }
 
-/**
- * 记录主题页滚动条位置
- */
-export const saveTopicScrollBar = (payload) => {
-  return {
-    type: type.SAVETOPICSCROLLBAR,
-    payload,
-  }
-}
 
 
 
