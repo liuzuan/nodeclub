@@ -27,5 +27,5 @@ npm start
 - [x] 主题详情，回复，点赞，收藏
 - [x] 页面跳转实现登录拦截
 
-### [点击or扫描二维码查看效果](https://liuzuann.com/cnode.html)
- [![扫一扫二维码查看效果](https://github.com/liuzuan/react-cnode/blob/master/src/assets/react-cnode.png)](https://liuzuann.com/cnode.html)
+### [点击or扫描二维码查看效果](liuzuann.com/cnode.html)
+ [![扫一扫二维码查看效果](https://github.com/liuzuan/react-cnode/blob/master/src/assets/react-cnode.png)](liuzuann.com/cnode.html)
