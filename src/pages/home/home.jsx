@@ -162,6 +162,7 @@ class Home extends Component {
     } else {
       tab = 'all'
     }
+    this.setNavBottom(tab);
     if (this.props.state[tab]) {
       let data = this.props.state[tab].data
       let scrollBar = this.props.state[tab].scrollBar
