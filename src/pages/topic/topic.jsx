@@ -130,10 +130,7 @@ class TopicDetail extends Component {
   }
 
   componentWillUnmount () {
-    let t = new Date()
-    console.log(scrollBar())
     this.props.saveTopicState(this.topicState())
-    console.log(new Date()-t)
   }
 
   async componentWillMount () {
