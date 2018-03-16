@@ -8,7 +8,6 @@ import { HomeData } from '../../config/utils/getData';
 import { connect } from 'react-redux';
 import { ToTop } from '../../common/index';
 import { Link } from 'react-router-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 /**
  * 首页模块入口
@@ -31,95 +30,95 @@ class Home extends Component {
       hasMore: true, // 有无更多数据
       nav_bottom: '0',
     };
+  }
 
-    /**
-     * 上拉加载
-     */
-    this.scrollGetData = async () => {
-      let newPage = this.state.page + 1
-      let res = await HomeData(newPage, this.state.currentTab, 10)
-      let newTopicData = [...this.state.topicData, ...res]
-      this.setState({
-        page: newPage,
-        topicData: newTopicData,
-        hasMore: !res.length < 10
-      })
+  /**
+   * 上拉加载
+   */
+  scrollGetData = async () => {
+    let newPage = this.state.page + 1
+    let res = await HomeData(newPage, this.state.currentTab, 10)
+    let newTopicData = [...this.state.topicData, ...res]
+    this.setState({
+      page: newPage,
+      topicData: newTopicData,
+      hasMore: !res.length < 10
+    })
+  }
+
+  /**
+   * 设置导航下底线
+   */
+  setNavBottom = (tab) => {
+    let nav_bottom
+    switch (tab) {
+      case 'all':
+        nav_bottom = '0';
+        break;
+      case 'good':
+        nav_bottom = '16.6%';
+        break;
+      case 'share':
+        nav_bottom = '33.4%';
+        break;
+      case 'ask':
+        nav_bottom = '50%';
+        break;
+      case 'job':
+        nav_bottom = '66.7%';
+        break;
+      case 'dev':
+        nav_bottom = '83.3%';
+        break;
+      default:
+        nav_bottom = '0';
     }
+    this.setState({
+      nav_bottom: nav_bottom
+    })
+  }
 
-    /**
-     * 设置导航下底线
-     */
-    this.setNavBottom = (tab) => {
-      let nav_bottom
-      switch (tab) {
-        case 'all':
-          nav_bottom = '0';
-          break;
-        case 'good':
-          nav_bottom = '16.6%';
-          break;
-        case 'share':
-          nav_bottom = '33.4%';
-          break;
-        case 'ask':
-          nav_bottom = '50%';
-          break;
-        case 'job':
-          nav_bottom = '66.7%';
-          break;
-        case 'dev':
-          nav_bottom = '83.3%';
-          break;
-        default:
-          nav_bottom = '0';
+  /**
+   * 点击导航切换话题分类
+   */
+  tabSelect = (tab) => {
+    this.setNavBottom(tab)
+    this.setState({
+      currentTab: tab,
+      topicData: HomeData(1, tab, 10)
+    })
+    // 切换tab前保存数据到store
+    this.props.saveHomeState(this.tabState())
+  };
+
+  /**
+   * 列表项tab过滤(good => 精华)
+   */
+  formatTab = (tab) => {
+    for (let k of this.state.navItems) {
+      if (k['tab'] === tab) {
+        return k['title']
       }
-      this.setState({
-        nav_bottom: nav_bottom
-      })
     }
+  };
 
-    /**
-     * 点击导航选择话题分类
-     */
-    this.tabSelect = (tab) => {
-      this.setNavBottom(tab)
-      this.setState({
-        currentTab: tab,
-        topicData: HomeData(1, tab, 10)
-      })
-      // 切换tab前保存数据到store
-      this.props.saveHomeState(this.tabState())
-    };
-
-    /**
-     * 列表项tab过滤(good => 精华)
-     */
-    this.formatTab = (tab) => {
-      for (let k of this.state.navItems) {
-        if (k['tab'] === tab) {
-          return k['title']
-        }
-      }
-    };
-
-    // tab数据，切换tab前使用
-    this.tabState = () => {
-      let payload = {
-        tab: this.state.currentTab,
-        data: this.state,
-        scrollBar: scrollBar()
-      }
-      return payload
+  // tab数据，切换tab前使用
+  tabState = () => {
+    let payload = {
+      tab: this.state.currentTab,
+      data: this.state,
+      scrollBar: scrollBar()
     }
-    // home数据，Unmount前使用
-    this.homeState = () => {
-      let payload = {
-        tab: 'home',
-        data: this.state,
-        scrollBar: scrollBar()
-      }
-      return payload
+    return payload
+  }
+  // home数据，Unmount前使用
+  homeState = () => {
+    let payload = {
+      tab: 'home',
+      data: this.state,
+      scrollBar: scrollBar()
     }
+    return payload
   }
 
   async componentWillMount () {
@@ -151,6 +150,7 @@ class Home extends Component {
       })
     }
   }
+  
   /**
    * 前进后退获取数据
    */
@@ -209,16 +209,10 @@ class Home extends Component {
             </section>
             <div className='nav-bottom' style={{ left: this.state.nav_bottom }} ></div>
           </nav>
-          <ReactCSSTransitionGroup
-            transitionName="slide-in"
-            transitionEnterTimeout={300}
-            transitionLeaveTimeout={300}>
-            <TopicList
-              // key={this.props.location.search}
-              state={this.state}
-              currentTab={this.state.currentTab} formatTab={this.formatTab}
-              scrollGetData={this.scrollGetData} />
-          </ReactCSSTransitionGroup>
+          <TopicList
+            state={this.state}
+            currentTab={this.state.currentTab} formatTab={this.formatTab}
+            scrollGetData={this.scrollGetData} />
         </main>
         <PublicFooter />
         <ToTop />
