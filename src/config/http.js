@@ -1,11 +1,13 @@
-import { baseUrl } from './api';
+import {
+  baseUrl
+} from './api';
 import axios from 'axios';
 
 
-export default(method, url, data) => {
-  if(method === 'get') {
+export default (method, url, data) => {
+  if (method === 'get') {
     let arr = []
-    if(data) {
+    if (data) {
       Object.keys(data).forEach(k => {
         arr.push(`${k}=${data[k]}`)
       })
@@ -17,11 +19,4 @@ export default(method, url, data) => {
     let Url = baseUrl + url
     return axios.post(Url, data).then(res => res.data).catch(err => {})
   }
-
-
-
-
-
-
-
 }

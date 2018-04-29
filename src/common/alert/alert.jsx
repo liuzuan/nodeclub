@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './alert.less'
 
-
 export default class Alert extends Component {
   constructor(props) {
     super(props);

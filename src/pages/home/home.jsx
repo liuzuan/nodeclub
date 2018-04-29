@@ -162,7 +162,7 @@ class Home extends Component {
       <div id='home' >
         <PublicHeader title='首&nbsp;页' avatar />
         <Nav state={this.state} tabSelect={this.tabSelect} />
-        <Lists state={this.state} />
+        <Lists _this={this} />
         <PublicFooter />
         <ToTop />
       </div>
@@ -200,15 +200,17 @@ class Nav extends Component {
  */
 class Lists extends Component {
   render () {
-    let offset = { transform: `translateX(${this.props.state.topicListsLeft})` }
+    let state = this.props._this.state;
+    let saveHomeState = this.props._this.props.saveHomeState;
+    let offset = { transform: `translateX(${state.topicListsLeft})` }
     return (
       <main className='lists' style={offset} >
-        <TopicList tab='all' state={this.props.state} />
-        <TopicList tab='good' state={this.props.state} />
-        <TopicList tab='share' state={this.props.state} />
-        <TopicList tab='ask' state={this.props.state} />
-        <TopicList tab='job' state={this.props.state} />
-        <TopicList tab='dev' state={this.props.state} />
+        <TopicList tab='all' state={state} saveHomeState={saveHomeState} />
+        <TopicList tab='good' state={state} saveHomeState={saveHomeState}/>
+        <TopicList tab='share' state={state} saveHomeState={saveHomeState}/>
+        <TopicList tab='ask' state={state} saveHomeState={saveHomeState}/>
+        <TopicList tab='job' state={state} saveHomeState={saveHomeState}/>
+        <TopicList tab='dev' state={state} saveHomeState={saveHomeState}/>
       </main>
     )
   }
@@ -233,6 +235,15 @@ class TopicList extends Component {
     }
   }
 
+  saveState = () => {
+    let payload = {
+      tab: this.props.tab,
+      data: this.state,
+      scrollBar: ''
+    };
+    return payload;
+  }
+
   /**
    * 上拉加载
    */
@@ -251,6 +262,11 @@ class TopicList extends Component {
     this.setState({
       topicData: await HomeData(1, this.props.tab, 10)
     })
+  }
+
+  componentWillUnmount() {
+    this.props.saveHomeState(this.saveState())
+    // console.log(this.props.saveHomeState)
   }
 
   render () {
