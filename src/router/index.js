@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import asyncComponent from '../config/utils/asyncComponent'
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-import home from '../pages/home/home';
-import user from '../pages/user/user';
-import about from '../pages/about/about';
-import topic from '../pages/topic/topic';
-import create from '../pages/create/create';
-import signIn from '../pages/signIn/signIn';
-import message from '../pages/my/message/message';
-import selfInfo from '../pages/my/selfInfo/selfInfo';
+import home from '@/pages/home/home';
+
+const user = asyncComponent(() => import('@/pages/user/user'));
+const about = asyncComponent(() => import('@/pages/about/about'));
+const topic = asyncComponent(() => import('@/pages/topic/topic'));
+const create = asyncComponent(() => import('@/pages/create/create'));
+const signIn = asyncComponent(() => import('@/pages/signIn/signIn'));
+const message = asyncComponent(() => import('@/pages/my/message/message'));
+const selfInfo = asyncComponent(() => import('@/pages/my/selfInfo/selfInfo'));
 
 export default class RouteConfig extends Component {
   render () {

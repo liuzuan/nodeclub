@@ -67,6 +67,7 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "node-sass": "^4.7.2",
+    "react-fastclick": "^3.0.2",
     "sass-loader": "^6.0.6",
     "webpack": "^3.10.0"
   },

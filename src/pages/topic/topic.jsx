@@ -341,7 +341,7 @@ class ReplyBox extends Component {
   render () {
     return (
       <div className='reply-box' >
-        <textarea className='textarea' ref='content' placeholder={this.props.placeholder} ></textarea>
+        <textarea className='textarea' autoFocus ref='content' placeholder={this.props.placeholder} ></textarea>
         <div className='btns'>
           <input className='btn' onClick={this.cancle} type="button" value='取 消' />
           <input className='btn' onClick={this.submit} type="button" value='回 复' />
