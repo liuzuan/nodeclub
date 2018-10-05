@@ -1,22 +1,26 @@
-import {
-  baseUrl
-} from './api';
+import { baseUrl } from './api';
 import axios from 'axios';
-
-
-export default (method, url, data) => {
-  if (method === 'get') {
-    let arr = []
-    if (data) {
-      Object.keys(data).forEach(k => {
-        arr.push(`${k}=${data[k]}`)
-      })
-      arr = arr.join('&')
+axios.interceptors.response.use(
+    function(response) {
+        return response;
+    },
+    function(error) {
+        return Promise.reject(error);
     }
-    let Url = baseUrl + url + '?' + arr
-    return axios.get(Url).then(res => res.data.data).catch(err => {})
-  } else {
-    let Url = baseUrl + url
-    return axios.post(Url, data).then(res => res.data).catch(err => {})
-  }
-}
+);
+export default (method, url, data) => {
+    let Url = baseUrl + url;
+    return new Promise((resolve, reject) => {
+        if (method === 'get') {
+            axios
+                .get(Url, { params: data })
+                .then(res => resolve(res.data.data))
+                .catch(err => reject(err));
+        } else {
+            axios
+                .post(Url, data)
+                .then(res => resolve(res.data))
+                .catch(err => reject(err));
+        }
+    });
+};

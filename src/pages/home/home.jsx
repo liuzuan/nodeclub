@@ -86,40 +86,6 @@ class Home extends Component {
         return payload;
     };
 
-    // touchHandle = () => {
-    //   let startX, startY, deltaX, deltaY, offsetX, translateX, newLeft, moveLength = 0;
-    //   let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
-    //   let initalPos = this.state.topicListsLeft;
-    //   window.ontouchstart = (e) => {
-    //     let touch = e.touches[0];
-    //     startX = touch.pageX;
-    //     startY = touch.pageY;
-    //   }
-    //   window.ontouchmove = (e) => {
-    //     let touch = e.touches[0];
-    //     deltaX = touch.pageX - startX;
-    //     deltaY = touch.pageY - startY;
-    //     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    //       moveLength = deltaX;
-    //     }
-    //     offsetX = moveLength / clientWidth / .06;
-    //     translateX = offsetX + parseFloat(initalPos)
-    //     newLeft = `${translateX}%`
-    //     this.setState({ topicListsLeft: newLeft })
-    //     console.log(newLeft)
-    //   }
-    //   window.ontouchend = (e) => {
-    //     // initalPos = newLeft
-    //     if (Math.abs(offsetX) >= 8.3) {
-    //       if (deltaX > 0) {
-    //         this.setState({ topicListsLeft: `${parseFloat(initalPos) - (100 / 6)}%` })
-
-    //       }
-    //     }
-    //     let touch = e.touches[0];
-    //   }
-    // }
-
     async componentWillMount() {
         if (this.props.state.home) {
             // 进入首页，store有对应tab数据则渲染
@@ -143,9 +109,6 @@ class Home extends Component {
         }
     }
 
-    // componentDidMount () {
-    //   // this.touchHandle()
-    // }
     /**
      * 前进后退获取数据
      */
@@ -283,6 +246,7 @@ class TopicList extends Component {
 
     render() {
         let { hasMore, topicData } = this.state;
+        console.log(topicData)
         return (
             <div className="listPanel">
                 <InfiniteScroll
