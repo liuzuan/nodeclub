@@ -246,7 +246,6 @@ class TopicList extends Component {
 
     render() {
         let { hasMore, topicData } = this.state;
-        console.log(topicData)
         return (
             <div className="listPanel">
                 <InfiniteScroll
